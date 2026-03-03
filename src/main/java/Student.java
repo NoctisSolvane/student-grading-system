@@ -17,7 +17,7 @@ public class Student {
     public int getRollNumber() { return rollNumber; }
     public double getMarks() { return marks; }
 
-    public boolean IsPassed() {
+    public boolean isPassed() {
         if (marks >= 40) return true;
         return false;
     }
@@ -30,9 +30,19 @@ public class Student {
         return "F";
     }
 
+    public static double getAvgMarks(ArrayList<Student> Students) {
+        if (Students.isEmpty()) return 0;
+
+        double sum = 0;
+        for (Student s: Students) {
+            sum += s.getMarks();
+        }
+        return sum / Students.size();
+    }
+
     @Override
     public String toString() {
-        return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Status: %s", rollNumber, name, marks, getGrade(), IsPassed() ? "Passed" : "Failed");
+        return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Average marks: %.2f | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");
     }
 
     public static void main(String[] args) {
@@ -59,6 +69,8 @@ public class Student {
             Student s = Students.get(i);
             System.out.printf("Student %d: %s%n", (i + 1), s);
         }
+        double avgMarks = getAvgMarks(Students);
+        System.out.println("\n Average marks of the class: " + avgMarks);
         scanner.close();
     }
 

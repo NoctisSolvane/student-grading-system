@@ -42,5 +42,26 @@ public class StudentTest{
         students.add(new Student("Test3", 1, 83.0));
         assertEquals(( 45.0 + 98.0 + 83.0 ) / 3, Student.getAvgMarks(students), 0.001);
     }
+
+    @Test
+    void testGetMarks_40() {
+        Student s = new Student("Test", 1,  40.0);
+        assertEquals("D", s.getGrade());
+        assertTrue(s.isPassed());
+    }
+
+    @Test
+    void testGetMarks_0() {
+        Student s = new Student("Test", 1, 0.0);
+        assertEquals("F", s.getGrade());
+        assertFalse(s.isPassed());
+    }
+
+    @Test
+    void testGetMarks_100() {
+        Student s = new Student("Test", 1, 100.0);
+        assertEquals("A", s.getGrade());
+        assertTrue(s.isPassed());
+    }
 }
 

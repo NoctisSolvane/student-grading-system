@@ -23,6 +23,7 @@ public class Student {
     }
 
     public String getGrade() {
+        if (marks < 0 || marks > 100) return "Invalid. Enter marks between 0 and 100.";
         if (marks >= 90) return "A";
         if (marks >= 75) return "B";
         if (marks >= 60) return "C";

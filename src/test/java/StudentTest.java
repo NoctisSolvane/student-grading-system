@@ -63,5 +63,17 @@ public class StudentTest{
         assertEquals("A", s.getGrade());
         assertTrue(s.isPassed());
     }
+
+    @Test
+    void testGetMarks_Invalid() {
+        Student s = new Student("Test", 1, 126.0);
+        assertEquals("Invalid. Enter marks between 0 and 100.", s.getGrade());
+    }
+
+    @Test
+    void testGetMarks_Negative() {
+        Student s = new Student("Test", 1, -67.0);
+        assertEquals("Invalid. Enter marks between 0 and 100.", s.getGrade());
+    }
 }
 

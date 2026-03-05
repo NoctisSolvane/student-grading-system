@@ -65,15 +65,29 @@ public class StudentTest{
     }
 
     @Test
-    void testGetMarks_Invalid() {
-        Student s = new Student("Test", 1, 126.0);
-        assertEquals("Invalid. Enter marks between 0 and 100.", s.getGrade());
+    void testGetMarks_Boundary() {
+        Student s = new Student("Test", 1, 39.99);
+        assertEquals("F", s.getGrade());
+        assertFalse(s.isPassed());
     }
 
     @Test
-    void testGetMarks_Negative() {
-        Student s = new Student("Test", 1, -67.0);
-        assertEquals("Invalid. Enter marks between 0 and 100.", s.getGrade());
+    void testGetMarks_Boundary2() {
+        Student s = new Student("Test", 1, 99.99);
+        assertEquals("A", s.getGrade());
+        assertTrue(s.isPassed());
+    }
+
+    @Test
+    void testGetMarks_Boundary3() {
+        Student s = new Student("Test", 1, 0.01);
+        assertEquals("F", s.getGrade());
+        assertFalse(s.isPassed());
+    }
+
+    @Test
+    void testSetMarks_Invalid_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> new Student("Test", 1, -1.0));
     }
 }
 

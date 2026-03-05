@@ -8,14 +8,24 @@ public class Student {
     private double marks;
 
     public Student(String name, int rollNumber, double marks) {
+        if (marks < 0 || marks > 100) {
+            throw new IllegalArgumentException("Marks must be between 0 and 100.");
+        }
         this.name = name;
         this.rollNumber = rollNumber;
         this.marks = marks;
-    }
+        }
 
     public String getName() { return name; }
     public int getRollNumber() { return rollNumber; }
     public double getMarks() { return marks; }
+
+    public void setMarks(double marks) {
+            if (marks < 0 || marks > 100) {
+                throw new IllegalArgumentException("Marks must be between 0 and 100.");
+            }
+            this.marks = marks;
+        }
 
     public boolean isPassed() {
         if (marks >= 40) return true;
@@ -23,7 +33,6 @@ public class Student {
     }
 
     public String getGrade() {
-        if (marks < 0 || marks > 100) return "Invalid. Enter marks between 0 and 100.";
         if (marks >= 90) return "A";
         if (marks >= 75) return "B";
         if (marks >= 60) return "C";
@@ -36,7 +45,7 @@ public class Student {
 
         double sum = 0;
         for (Student s: Students) {
-            sum += s.getMarks();
+            sum += s.marks;
         }
         return sum / Students.size();
     }

@@ -25,7 +25,19 @@ public class Student {
                 throw new IllegalArgumentException("Marks must be between 0 and 100.");
             }
             this.marks = marks;
+    }
+
+    public static String findHighestScorer(ArrayList<Student> Students) {
+        if (Students.isEmpty()) return "No students in the list.";
+        
+        Student highest = Students.get(0);
+        for (Student s: Students) {
+            if (s.getMarks() > highest.getMarks()) {
+                highest = s;
+            }
         }
+        return highest.getName();
+    }
 
     public boolean isPassed() {
         if (marks >= 40) return true;
@@ -52,7 +64,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Average marks: %.2f | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");
+        return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");
     }
 
     public static void main(String[] args) {

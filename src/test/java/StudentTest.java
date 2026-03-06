@@ -89,5 +89,28 @@ public class StudentTest{
     void testSetMarks_Invalid_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> new Student("Test", 1, -1.0));
     }
+
+    @Test
+    void testEmptyStudentList_AvgMarks() {
+        ArrayList<Student> students = new ArrayList<>();
+        assertEquals(0, Student.getAvgMarks(students), 0.001);
+    }
+
+    @Test
+    void testEmptyStudentList_HighestScorer() {
+        ArrayList<Student> students = new ArrayList<>();
+        assertEquals("No students in the list.", Student.findHighestScorer(students));
+    }
+
+    @Test
+    void testFind_HighestScorer() {
+        ArrayList<Student> students = new ArrayList<>();
+        
+        students.add(new Student("Grok", 1, 1.0));
+        students.add(new Student("Noctis", 2, 99.99));
+        students.add(new Student("Cassia", 3, 99.98));
+
+        assertEquals("Noctis", Student.findHighestScorer(students));
+    }
 }
 

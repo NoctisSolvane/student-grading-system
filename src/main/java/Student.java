@@ -27,8 +27,8 @@ public class Student {
             this.marks = marks;
     }
 
-    public static String findHighestScorer(ArrayList<Student> Students) {
-        if (Students.isEmpty()) return "No students in the list.";
+    public static Student findHighestScorer(ArrayList<Student> Students) {
+        if (Students.isEmpty()) return null;
         
         Student highest = Students.get(0);
         for (Student s: Students) {
@@ -36,7 +36,19 @@ public class Student {
                 highest = s;
             }
         }
-        return highest.getName();
+        return highest;
+    }
+
+    public static Student findLowestScorer(ArrayList<Student> Students) {
+        if (Students.isEmpty()) return null;
+
+        Student lowest = Students.get(0);
+        for (Student s: Students) {
+            if (s.getMarks() < lowest.getMarks()) {
+                lowest = s;
+            }
+        }
+        return lowest;
     }
 
     public boolean isPassed() {

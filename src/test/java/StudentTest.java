@@ -99,7 +99,7 @@ public class StudentTest{
     @Test
     void testEmptyStudentList_HighestScorer() {
         ArrayList<Student> students = new ArrayList<>();
-        assertEquals("No students in the list.", Student.findHighestScorer(students));
+        assertNull(Student.findHighestScorer(students));
     }
 
     @Test
@@ -110,7 +110,31 @@ public class StudentTest{
         students.add(new Student("Noctis", 2, 99.99));
         students.add(new Student("Cassia", 3, 99.98));
 
-        assertEquals("Noctis", Student.findHighestScorer(students));
+        Student highest = Student.findHighestScorer(students);
+        assertNotNull(highest);
+        assertEquals("Noctis", highest.getName());
+        assertEquals(99.99, highest.getMarks(), 0.001);
+
+    }
+
+    @Test
+    void testFind_LowestScorer_in_EmptyList() {
+        ArrayList<Student> students = new ArrayList<>();
+        assertNull(Student.findLowestScorer(students));
+    }
+
+    @Test
+    void testFind_LowestScorer() {
+        ArrayList<Student> students = new ArrayList<>();
+        
+        students.add(new Student("Grok", 1, 0.001));
+        students.add(new Student("Noctis", 2, 0.01));
+        students.add(new Student("Nephis", 3, 100.0));
+
+        Student lowest = Student.findLowestScorer(students);
+        assertNotNull(lowest);
+        assertEquals("Grok", lowest.getName());
+        assertEquals(0.001, lowest.getMarks(), 0.001);
     }
 }
 

@@ -28,11 +28,11 @@ public class Student {
             this.marks = marks;
     }
 
-    public static Student findHighestScorer(List<Student> Students) {
-        if (Students == null || Students.isEmpty()) return null;
+    public static Student findHighestScorer(List<Student> students) {
+        if (students == null || students.isEmpty()) return null;
         
-        Student highest = Students.get(0);
-        for (Student s: Students) {
+        Student highest = students.get(0);
+        for (Student s: students) {
             if (s.getMarks() > highest.getMarks()) {
                 highest = s;
             }
@@ -40,11 +40,11 @@ public class Student {
         return highest;
     }
 
-    public static Student findLowestScorer(List<Student> Students) {
-        if (Students == null || Students.isEmpty()) return null;
+    public static Student findLowestScorer(List<Student> students) {
+        if (students == null || students.isEmpty()) return null;
 
-        Student lowest = Students.get(0);
-        for (Student s: Students) {
+        Student lowest = students.get(0);
+        for (Student s: students) {
             if (s.getMarks() < lowest.getMarks()) {
                 lowest = s;
             }
@@ -52,11 +52,11 @@ public class Student {
         return lowest;
     } 
 
-    public static int countPassed(List<Student> Students) {
-        if (Students == null || Students.isEmpty()) return 0;
+    public static int countPassed(List<Student> students) {
+        if (students == null || students.isEmpty()) return 0;
 
         int count = 0;
-        for (Student s: Students) {
+        for (Student s: students) {
             if (s.isPassed()) {
                 count++;
             }
@@ -64,11 +64,11 @@ public class Student {
         return count;
     }
 
-    public static double getPassPercentage(List<Student> Students) {
-        if (Students == null || Students.isEmpty()) return 0.0;
+    public static double getPassPercentage(List<Student> students) {
+        if (students == null || students.isEmpty()) return 0.0;
 
-        int passed = countPassed(Students);
-        return (passed * 100.0) / Students.size();
+        int passed = countPassed(students);
+        return (passed * 100.0) / students.size();
     }
 
     public boolean isPassed() {
@@ -84,14 +84,14 @@ public class Student {
         return "F";
     }
 
-    public static double getAvgMarks(List<Student> Students) {
-        if (Students.isEmpty()) return 0;
+    public static double getAvgMarks(List<Student> students) {
+        if (students.isEmpty()) return 0;
 
         double sum = 0;
-        for (Student s: Students) {
+        for (Student s: students) {
             sum += s.marks;
         }
-        return sum / Students.size();
+        return sum / students.size();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class Student {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Student> Students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
 
         System.out.println("How many students? ");
         int num = getValidInt(scanner, "Number of students", 1, 10);
@@ -114,16 +114,16 @@ public class Student {
             double marks = getValidDouble(scanner, "Marks", 1, 100);
 
             Student s = new Student(name, rollNumber, marks);
-            Students.add(s);
+            students.add(s);
 
             System.out.println("\n" + s);
         }
         System.out.println("\n=== SUMMARY ===");
-        for (int i = 0; i < Students.size(); i++) {
-            Student s = Students.get(i);
+        for (int i = 0; i < students.size(); i++) {
+            Student s = students.get(i);
             System.out.printf("Student %d: %s%n", (i + 1), s);
         }
-        double avgMarks = getAvgMarks(Students);
+        double avgMarks = getAvgMarks(students);
         System.out.println("\n Average marks of the class: " + avgMarks);
         scanner.close();
     }

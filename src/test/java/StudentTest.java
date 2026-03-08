@@ -208,6 +208,9 @@ public class StudentTest{
         students.add(new Student("Grok", 1, 0.0));
         students.add(new Student("Ichigo", 2, 18.9));
         students.add(new Student("Caster", 3, 39.99));
+
+        assertEquals(0, Student.countPassed(students));
+        assertEquals(0.0, Student.getPassPercentage(students), 0.001);
     }
 }
 

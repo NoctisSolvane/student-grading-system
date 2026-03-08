@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentTest{
 
@@ -36,7 +37,7 @@ public class StudentTest{
 
     @Test
     void testGetAvgMarks() {
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         students.add(new Student("Test1", 1, 45.0));
         students.add(new Student("Test2", 1, 98.0));
         students.add(new Student("Test3", 1, 83.0));
@@ -92,19 +93,19 @@ public class StudentTest{
 
     @Test
     void testEmptyStudentList_AvgMarks() {
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         assertEquals(0, Student.getAvgMarks(students), 0.001);
     }
 
     @Test
     void testEmptyStudentList_HighestScorer() {
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         assertNull(Student.findHighestScorer(students));
     }
 
     @Test
     void testFind_HighestScorer() {
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         
         students.add(new Student("Grok", 1, 1.0));
         students.add(new Student("Noctis", 2, 99.99));
@@ -119,13 +120,13 @@ public class StudentTest{
 
     @Test
     void testFind_LowestScorer_in_EmptyList() {
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         assertNull(Student.findLowestScorer(students));
     }
 
     @Test
     void testFind_LowestScorer() {
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         
         students.add(new Student("Grok", 1, 0.001));
         students.add(new Student("Noctis", 2, 0.01));
@@ -135,6 +136,34 @@ public class StudentTest{
         assertNotNull(lowest);
         assertEquals("Grok", lowest.getName());
         assertEquals(0.001, lowest.getMarks(), 0.001);
+    }
+
+    @Test
+    void testCountPassed_EmptyList() {
+        List<Student> students = new ArrayList<>();
+        assertEquals(0, Student.countPassed(students));
+    }
+
+    @Test
+    void testCountPassed() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Grok", 1, 31.0));
+        students.add(new Student("Noctis", 2, 99.0));
+        students.add(new Student("Sunless", 67, 39.9));
+
+        assertEquals(1, Student.countPassed(students));
+    }
+
+    @Test
+    void testCountPassed_AllFailed() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Grok", 1, 0.0));
+        students.add(new Student("Kaneki", 2, 27.0));
+        students.add(new Student("Caster", 3, 39.99));
+
+        assertEquals(0, Student.countPassed(students));
     }
 }
 

@@ -1,6 +1,7 @@
 // So fucking tired
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Student {
     private String name;
@@ -27,8 +28,8 @@ public class Student {
             this.marks = marks;
     }
 
-    public static Student findHighestScorer(ArrayList<Student> Students) {
-        if (Students.isEmpty()) return null;
+    public static Student findHighestScorer(List<Student> Students) {
+        if (Students.isEmpty() || Students == null) return null;
         
         Student highest = Students.get(0);
         for (Student s: Students) {
@@ -39,8 +40,8 @@ public class Student {
         return highest;
     }
 
-    public static Student findLowestScorer(ArrayList<Student> Students) {
-        if (Students.isEmpty()) return null;
+    public static Student findLowestScorer(List<Student> Students) {
+        if (Students.isEmpty() || Students == null) return null;
 
         Student lowest = Students.get(0);
         for (Student s: Students) {
@@ -49,6 +50,18 @@ public class Student {
             }
         }
         return lowest;
+    } 
+
+    public static int countPassed(List<Student> Students) {
+        if (Students.isEmpty() || Students == null) return 0;
+
+        int count = 0;
+        for (Student s: Students) {
+            if (s.isPassed()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public boolean isPassed() {
@@ -64,7 +77,7 @@ public class Student {
         return "F";
     }
 
-    public static double getAvgMarks(ArrayList<Student> Students) {
+    public static double getAvgMarks(List<Student> Students) {
         if (Students.isEmpty()) return 0;
 
         double sum = 0;
@@ -81,7 +94,7 @@ public class Student {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Student> Students = new ArrayList<>();
+        List<Student> Students = new ArrayList<>();
 
         System.out.println("How many students? ");
         int num = getValidInt(scanner, "Number of students", 1, 10);

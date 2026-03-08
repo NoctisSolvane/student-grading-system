@@ -29,7 +29,7 @@ public class Student {
     }
 
     public static Student findHighestScorer(List<Student> Students) {
-        if (Students.isEmpty() || Students == null) return null;
+        if (Students == null || Students.isEmpty()) return null;
         
         Student highest = Students.get(0);
         for (Student s: Students) {
@@ -41,7 +41,7 @@ public class Student {
     }
 
     public static Student findLowestScorer(List<Student> Students) {
-        if (Students.isEmpty() || Students == null) return null;
+        if (Students == null || Students.isEmpty()) return null;
 
         Student lowest = Students.get(0);
         for (Student s: Students) {
@@ -53,7 +53,7 @@ public class Student {
     } 
 
     public static int countPassed(List<Student> Students) {
-        if (Students.isEmpty() || Students == null) return 0;
+        if (Students == null || Students.isEmpty()) return 0;
 
         int count = 0;
         for (Student s: Students) {
@@ -62,6 +62,13 @@ public class Student {
             }
         }
         return count;
+    }
+
+    public static double getPassPercentage(List<Student> Students) {
+        if (Students == null || Students.isEmpty()) return 0.0;
+
+        int passed = countPassed(Students);
+        return (passed * 100.0) / Students.size();
     }
 
     public boolean isPassed() {

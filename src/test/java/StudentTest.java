@@ -145,7 +145,7 @@ public class StudentTest{
     }
 
     @Test
-    void testCountPassed() {
+    void testCountPassed_MixedPassFail_ReturnCorrectCount() {
         List<Student> students = new ArrayList<>();
 
         students.add(new Student("Grok", 1, 31.0));
@@ -164,6 +164,50 @@ public class StudentTest{
         students.add(new Student("Caster", 3, 39.99));
 
         assertEquals(0, Student.countPassed(students));
+    }
+
+    @Test
+    void testgetPassPercentage_EmptyList() {
+        List<Student> students = new ArrayList<>();
+        assertEquals(0.0, Student.getPassPercentage(students), 0.001);
+    }
+
+    @Test
+    void testgetPassPercentage_NullList() {
+        assertEquals(0.0, Student.getPassPercentage(null), 0.001);
+    }
+
+    @Test
+    void testgetPassPercentage_NormalList() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("GPT", 1, 13.9));
+        students.add(new Student("Kai", 2, 97.8));
+        students.add(new Student("Effie", 3, 69.0));
+
+        assertEquals(2, Student.countPassed(students));
+        assertEquals(66.666, Student.getPassPercentage(students), 0.001);
+    }
+
+    @Test
+    void testgetPassPercentage_AllPassed() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Nephis", 1, 99.0));
+        students.add(new Student("Sunless", 2, 98.9));
+        students.add(new Student("Noctis", 3, 87.7));
+
+        assertEquals(3, Student.countPassed(students));
+        assertEquals(100.0, Student.getPassPercentage(students), 0.001);
+    }
+
+    @Test
+    void testgetPassPercentage_AllFailed() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Grok", 1, 0.0));
+        students.add(new Student("Ichigo", 2, 18.9));
+        students.add(new Student("Caster", 3, 39.99));
     }
 }
 

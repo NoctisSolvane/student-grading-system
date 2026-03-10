@@ -2,6 +2,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class Student {
     private String name;
@@ -69,6 +70,24 @@ public class Student {
 
         int passed = countPassed(students);
         return (passed * 100.0) / students.size();
+    }
+
+    public static double getMedianMarks(List<Student> students) {
+        if (students == null || students.isEmpty()) return 0.0;
+
+        List<Double> marksList = new ArrayList<>();
+        for (Student s: students) {
+            marksList.add(s.getMarks());
+        }
+        Collections.sort(marksList);
+        int n = marksList.size();
+        if (n % 2 == 1) {
+            return marksList.get( n / 2);
+        } else {
+            double mid1 = marksList.get(n / 2 - 1);
+            double mid2 = marksList.get(n / 2);
+            return (mid1 + mid2) / 2.0;
+        }
     }
 
     public boolean isPassed() {

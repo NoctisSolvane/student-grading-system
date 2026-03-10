@@ -212,5 +212,48 @@ public class StudentTest{
         assertEquals(0, Student.countPassed(students));
         assertEquals(0.0, Student.getPassPercentage(students), 0.001);
     }
+
+    @Test
+    void testgetMedianMarks_EmptyLIst() {
+        List<Student> students = new ArrayList<>();
+        assertEquals(0.0, Student.getMedianMarks(students), 0.001);
+    }
+
+    @Test
+    void testgetMedianMarks_NullList() {
+        assertEquals(0.0, Student.getMedianMarks(null), 0.001);
+    }
+
+    @Test
+    void testgetMedianMarks_OddStudents() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Saiki", 1, 45.0));
+        students.add(new Student("Ichigo", 2, 0.0));
+        students.add(new Student("Goku", 2, 39.0));
+
+        assertEquals(39.0, Student.getMedianMarks(students), 0.001);
+    }
+
+    @Test
+    void testgetMedianMarks_EvenStudents() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Saiki", 1, 45.0));
+        students.add(new Student("Ichigo", 2, 89.0));
+        students.add(new Student("TokyoSims", 3, 69.0));
+        students.add(new Student("SoulDevourer", 4, 56.0));
+
+        assertEquals((56.0 + 69.0) / 2, Student.getMedianMarks(students), 0.001);
+    }
+
+    @Test
+    void testgetMedianMarks_SingleStudent() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Deku", 1, 52.0));
+
+        assertEquals(52.0, Student.getMedianMarks(students), 0.001);
+    }
 }
 

@@ -90,6 +90,30 @@ public class Student {
         }
     }
 
+    public static String getClassSummary(List<Student> students) {
+        if (students == null || students.isEmpty()) return "No students in the class.";
+
+        int total = students.size();
+        int passed = countPassed(students);
+        double passPercentage = getPassPercentage(students);
+        double avg = getAvgMarks(students);
+        Student highest = findHighestScorer(students);
+        Student lowest = findLowestScorer(students);
+
+        String highestName = (highest != null) ? highest.getName() : "N/A";
+        String lowestName = (lowest != null) ? lowest.getName() : "N/A";
+
+        return String.format(
+            "Class Summary (%d students): %n" +
+            "Average Marks: %.2f%n" +
+            "Pass Percentage: %.2f%%%n" +
+            "Passed: %d | Failed: %d%n" +
+            "Highest Scorer: %s%n" +
+            "Lowest Scorer: %s",
+            total, avg, passPercentage, passed, (total - passed), highestName, lowestName
+        );
+    }
+
     public boolean isPassed() {
         if (marks >= 40) return true;
         return false;

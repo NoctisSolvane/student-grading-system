@@ -255,5 +255,32 @@ public class StudentTest{
 
         assertEquals(52.0, Student.getMedianMarks(students), 0.001);
     }
+
+    @Test
+    void testgetClassSummary_EmptyList() {
+        assertEquals("No students in the class.", Student.getClassSummary(new ArrayList<>()));
+    }
+
+    @Test
+    void testgetClassSummary_NullList() {
+        assertEquals("No students in the class.", Student.getClassSummary(null));
+    }
+
+    @Test
+    void testgetClassSummary_NormalList() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Cassie", 1, 90.0));
+        students.add(new Student("Grok", 2, 20.0));
+        students.add(new Student("Effie", 3, 40.0));
+
+        String summary = Student.getClassSummary(students);
+        assertTrue(summary.contains("Class Summary (3 students)"));
+        assertTrue(summary.contains("Average Marks: 50.00"));
+        assertTrue(summary.contains("Pass Percentage: 66.67"));
+        assertTrue(summary.contains("Passed: 2 | Failed: 1"));
+        assertTrue(summary.contains("Highest Scorer: Cassie"));
+        assertTrue(summary.contains("Lowest Scorer: Grok"));
+    }
 }
 

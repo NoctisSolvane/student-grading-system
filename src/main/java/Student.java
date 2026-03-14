@@ -114,6 +114,26 @@ public class Student {
         );
     }
 
+    public static List<Student> getTop3Students(List<Student> students) {
+        if (students == null || students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> Double.compare(b.getMarks(), a.getMarks()));
+
+        int limit = Math.min(3, sorted.size());
+        return sorted.subList(0, limit);
+    }
+
+    public static List<Student> getBottom3Students(List<Student> students) {
+        if (students == null || students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> Double.compare(a.getMarks(), b.getMarks()));
+
+        int limit = Math.min(3, sorted.size());
+        return sorted.subList(0, limit);
+    }
+
     public boolean isPassed() {
         if (marks >= 40) return true;
         return false;

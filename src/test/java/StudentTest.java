@@ -282,5 +282,72 @@ public class StudentTest{
         assertTrue(summary.contains("Highest Scorer: Cassie"));
         assertTrue(summary.contains("Lowest Scorer: Grok"));
     }
+
+    @Test
+    void testGetTop3Students_NormalList() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Luffy", 1, 87.0));
+        students.add(new Student("Zoro", 2, 39.8));
+        students.add(new Student("Nami", 3, 67.0));
+        students.add(new Student("Chopper", 4, 54.0));
+
+        List<Student> top3 = Student.getTop3Students(students);
+        assertEquals(3, top3.size());
+        assertEquals("Luffy", top3.get(0).getName());
+        assertEquals("Nami", top3.get(1).getName());
+        assertEquals("Chopper", top3.get(2).getName());
+    }
+
+    @Test
+    void testGetTop3Students_lessThan3() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Luffy", 1, 31.0));
+        students.add(new Student("Zoro", 2, 49.0));
+
+        List<Student> top3 = Student.getTop3Students(students);
+        assertEquals(2, top3.size());
+        assertEquals("Zoro", top3.get(0).getName());
+    }
+
+    @Test
+    void testGetTop3Students_EmptyList() {
+        List<Student> students = new ArrayList<>();
+        List<Student> top3 = Student.getTop3Students(students);
+        assertTrue(top3.isEmpty());
+    }
+    
+    @Test
+    void testGetBottom3Students_NormalList() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Luffy", 1, 87.0));
+        students.add(new Student("Zoro", 2, 63.0));
+        students.add(new Student("Nami", 3, 2.0));
+        students.add(new Student("Chopper", 4, 52.0));
+
+        List<Student> bottom3 = Student.getBottom3Students(students);
+        assertEquals(3, bottom3.size());
+        assertEquals("Nami", bottom3.get(0).getName());
+        assertEquals("Chopper", bottom3.get(1).getName());
+    }
+    
+    @Test
+    void testGetBottom3Students_LessThan3() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Luffy",2 , 53.4));
+        students.add(new Student("Xdrake", 1, 23.0));
+
+        List<Student> bottom3 = Student.getBottom3Students(students);
+        assertEquals(2, bottom3.size());
+        assertEquals("Luffy", bottom3.get(1).getName());
+    }
+    
+    @Test
+    void testGetBottom3Students_NullList() {
+        assertTrue(Student.getBottom3Students(null).isEmpty());
+    }
 }
 

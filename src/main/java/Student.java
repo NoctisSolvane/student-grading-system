@@ -113,7 +113,7 @@ public class Student {
             total, avg, passPercentage, passed, (total - passed), highestName, lowestName
         );
     }
-
+ 
     public static List<Student> getTop3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -132,6 +132,18 @@ public class Student {
 
         int limit = Math.min(3, sorted.size());
         return sorted.subList(0, limit);
+    }
+
+    public static List<Student> getFailedStudents(List<Student> students) {
+        if (students == null || students.isEmpty()) return new ArrayList<>();
+
+        List<Student> failed = new ArrayList<>();
+        for (Student s: students) {
+            if (!s.isPassed()) {
+                failed.add(s);
+            }
+        }
+        return failed;
     }
 
     public boolean isPassed() {

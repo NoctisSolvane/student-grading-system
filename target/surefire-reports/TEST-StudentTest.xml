@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="StudentTest" time="0.567" tests="40" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="StudentTest" time="0.692" tests="43" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
-    <property name="sun.java.command" value="C:\Users\hp\AppData\Local\Temp\surefire8294887310110162797\surefirebooter-20260314214015343_3.jar C:\Users\hp\AppData\Local\Temp\surefire8294887310110162797 2026-03-14T21-40-14_469-jvmRun1 surefire-20260314214015343_1tmp surefire_0-20260314214015343_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\hp\AppData\Local\Temp\surefire15870441307186241930\surefirebooter-20260315120406885_3.jar C:\Users\hp\AppData\Local\Temp\surefire15870441307186241930 2026-03-15T12-04-06_105-jvmRun1 surefire-20260315120406885_1tmp surefire_0-20260315120406885_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\hp\student-grading-system\target\test-classes;C:\Users\hp\student-grading-system\target\classes;C:\Users\hp\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\hp\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\hp\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\hp\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\hp\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\hp\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\hp\AppData\Local\Temp\surefire8294887310110162797\surefirebooter-20260314214015343_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\hp\AppData\Local\Temp\surefire15870441307186241930\surefirebooter-20260315120406885_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.12+8-LTS-286"/>
@@ -56,44 +56,47 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testGetBottom3Students_NormalList" classname="StudentTest" time="0.15"/>
-  <testcase name="testEmptyStudentList_HighestScorer" classname="StudentTest" time="0.047"/>
-  <testcase name="testFind_LowestScorer" classname="StudentTest" time="0.024"/>
-  <testcase name="testCountPassed_AllFailed" classname="StudentTest" time="0.002"/>
-  <testcase name="testgetClassSummary_NullList" classname="StudentTest" time="0.002"/>
-  <testcase name="testGetBottom3Students_NullList" classname="StudentTest" time="0.025"/>
-  <testcase name="testGetAvgMarks" classname="StudentTest" time="0.002"/>
-  <testcase name="testGetBottom3Students_LessThan3" classname="StudentTest" time="0.001"/>
-  <testcase name="testGetMarks_Boundary" classname="StudentTest" time="0.0"/>
-  <testcase name="testgetMedianMarks_SingleStudent" classname="StudentTest" time="0.003"/>
+  <testcase name="testGetBottom3Students_NormalList" classname="StudentTest" time="0.125"/>
+  <testcase name="testGetFailedStudents_NullList" classname="StudentTest" time="0.006"/>
+  <testcase name="testEmptyStudentList_HighestScorer" classname="StudentTest" time="0.008"/>
+  <testcase name="testFind_LowestScorer" classname="StudentTest" time="0.006"/>
+  <testcase name="testCountPassed_AllFailed" classname="StudentTest" time="0.004"/>
+  <testcase name="testGetFailedStudents_NormalList" classname="StudentTest" time="0.006"/>
+  <testcase name="testgetClassSummary_NullList" classname="StudentTest" time="0.006"/>
+  <testcase name="testGetBottom3Students_NullList" classname="StudentTest" time="0.002"/>
+  <testcase name="testGetAvgMarks" classname="StudentTest" time="0.0"/>
+  <testcase name="testGetBottom3Students_LessThan3" classname="StudentTest" time="0.007"/>
+  <testcase name="testGetMarks_Boundary" classname="StudentTest" time="0.003"/>
+  <testcase name="testgetMedianMarks_SingleStudent" classname="StudentTest" time="0.004"/>
   <testcase name="testFind_HighestScorer" classname="StudentTest" time="0.002"/>
-  <testcase name="testgetMedianMarks_EvenStudents" classname="StudentTest" time="0.004"/>
-  <testcase name="testFind_LowestScorer_in_EmptyList" classname="StudentTest" time="0.002"/>
-  <testcase name="testgetMedianMarks_NullList" classname="StudentTest" time="0.003"/>
-  <testcase name="testgetClassSummary_NormalList" classname="StudentTest" time="0.053"/>
-  <testcase name="testGetMarks_100" classname="StudentTest" time="0.004"/>
-  <testcase name="testgetPassPercentage_NullList" classname="StudentTest" time="0.0"/>
-  <testcase name="testGetTop3Students_lessThan3" classname="StudentTest" time="0.005"/>
-  <testcase name="testGetTop3Students_NormalList" classname="StudentTest" time="0.005"/>
+  <testcase name="testgetMedianMarks_EvenStudents" classname="StudentTest" time="0.003"/>
+  <testcase name="testFind_LowestScorer_in_EmptyList" classname="StudentTest" time="0.0"/>
+  <testcase name="testgetMedianMarks_NullList" classname="StudentTest" time="0.002"/>
+  <testcase name="testgetClassSummary_NormalList" classname="StudentTest" time="0.024"/>
+  <testcase name="testGetMarks_100" classname="StudentTest" time="0.002"/>
+  <testcase name="testgetPassPercentage_NullList" classname="StudentTest" time="0.002"/>
+  <testcase name="testGetTop3Students_lessThan3" classname="StudentTest" time="0.002"/>
+  <testcase name="testGetTop3Students_NormalList" classname="StudentTest" time="0.008"/>
   <testcase name="testGetGrade_A" classname="StudentTest" time="0.002"/>
-  <testcase name="testGetGrade_B" classname="StudentTest" time="0.004"/>
-  <testcase name="testGetGrade_F" classname="StudentTest" time="0.002"/>
-  <testcase name="testCountPassed_MixedPassFail_ReturnCorrectCount" classname="StudentTest" time="0.003"/>
-  <testcase name="testgetClassSummary_EmptyList" classname="StudentTest" time="0.006"/>
-  <testcase name="testGetTop3Students_EmptyList" classname="StudentTest" time="0.003"/>
-  <testcase name="testisPassed_False" classname="StudentTest" time="0.004"/>
-  <testcase name="testEmptyStudentList_AvgMarks" classname="StudentTest" time="0.0"/>
-  <testcase name="testSetMarks_Invalid_throwsException" classname="StudentTest" time="0.0"/>
-  <testcase name="testgetPassPercentage_EmptyList" classname="StudentTest" time="0.002"/>
-  <testcase name="testGetMarks_0" classname="StudentTest" time="0.0"/>
-  <testcase name="testgetPassPercentage_NormalList" classname="StudentTest" time="0.0"/>
-  <testcase name="testGetMarks_40" classname="StudentTest" time="0.0"/>
-  <testcase name="testgetPassPercentage_AllFailed" classname="StudentTest" time="0.005"/>
+  <testcase name="testGetGrade_B" classname="StudentTest" time="0.006"/>
+  <testcase name="testGetGrade_F" classname="StudentTest" time="0.006"/>
+  <testcase name="testCountPassed_MixedPassFail_ReturnCorrectCount" classname="StudentTest" time="0.024"/>
+  <testcase name="testgetClassSummary_EmptyList" classname="StudentTest" time="0.015"/>
+  <testcase name="testGetTop3Students_EmptyList" classname="StudentTest" time="0.002"/>
+  <testcase name="testisPassed_False" classname="StudentTest" time="0.002"/>
+  <testcase name="testGetFailedStudents_EmtpyList" classname="StudentTest" time="0.002"/>
+  <testcase name="testEmptyStudentList_AvgMarks" classname="StudentTest" time="0.002"/>
+  <testcase name="testSetMarks_Invalid_throwsException" classname="StudentTest" time="0.002"/>
+  <testcase name="testgetPassPercentage_EmptyList" classname="StudentTest" time="0.053"/>
+  <testcase name="testGetMarks_0" classname="StudentTest" time="0.002"/>
+  <testcase name="testgetPassPercentage_NormalList" classname="StudentTest" time="0.002"/>
+  <testcase name="testGetMarks_40" classname="StudentTest" time="0.011"/>
+  <testcase name="testgetPassPercentage_AllFailed" classname="StudentTest" time="0.002"/>
   <testcase name="testgetMedianMarks_EmptyLIst" classname="StudentTest" time="0.002"/>
-  <testcase name="testgetMedianMarks_OddStudents" classname="StudentTest" time="0.002"/>
-  <testcase name="testisPassed_True" classname="StudentTest" time="0.0"/>
-  <testcase name="testgetPassPercentage_AllPassed" classname="StudentTest" time="0.004"/>
-  <testcase name="testCountPassed_EmptyList" classname="StudentTest" time="0.002"/>
-  <testcase name="testGetMarks_Boundary2" classname="StudentTest" time="0.004"/>
-  <testcase name="testGetMarks_Boundary3" classname="StudentTest" time="0.0"/>
+  <testcase name="testgetMedianMarks_OddStudents" classname="StudentTest" time="0.006"/>
+  <testcase name="testisPassed_True" classname="StudentTest" time="0.004"/>
+  <testcase name="testgetPassPercentage_AllPassed" classname="StudentTest" time="0.006"/>
+  <testcase name="testCountPassed_EmptyList" classname="StudentTest" time="0.01"/>
+  <testcase name="testGetMarks_Boundary2" classname="StudentTest" time="0.002"/>
+  <testcase name="testGetMarks_Boundary3" classname="StudentTest" time="0.012"/>
 </testsuite>

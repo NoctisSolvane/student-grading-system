@@ -349,5 +349,35 @@ public class StudentTest{
     void testGetBottom3Students_NullList() {
         assertTrue(Student.getBottom3Students(null).isEmpty());
     }
+
+    @Test
+    void testGetFailedStudents_EmtpyList() {
+        List<Student> students = new ArrayList<>();
+        List<Student> failed = Student.getFailedStudents(students);
+        assertTrue(failed.isEmpty());
+    }
+
+    @Test
+    void testGetFailedStudents_NullList() {
+        List<Student> failed = Student.getFailedStudents(null);
+        assertTrue(failed.isEmpty());
+    }
+
+    @Test
+    void testGetFailedStudents_NormalList() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Grok", 1, 0.0));
+        students.add(new Student("Ichigo", 2, 18.2));
+        students.add(new Student("Caster", 3, 31.2));
+        students.add(new Student("Neph", 4, 95.2));
+        students.add(new Student("Travis", 23, 54.0));
+
+        List<Student> failed = Student.getFailedStudents(students);
+        assertEquals(3, failed.size());
+        assertTrue(failed.stream().anyMatch(s -> s.getName().equals("Grok")));
+        assertTrue(failed.stream().anyMatch(s -> s.getName().equals("Ichigo")));
+        assertTrue(failed.stream().anyMatch(s -> s.getName().equals("Caster")));
+    }
 }
 

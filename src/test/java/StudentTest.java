@@ -379,5 +379,24 @@ public class StudentTest{
         assertTrue(failed.stream().anyMatch(s -> s.getName().equals("Ichigo")));
         assertTrue(failed.stream().anyMatch(s -> s.getName().equals("Caster")));
     }
+
+    @Test
+    void testGetPassPercentage_BoundaryExactly40() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Grok", 1, 30.0));
+        students.add(new Student("Ichigo", 2, 40.0));
+
+        assertEquals(50.0, Student.getPassPercentage(students), 0.001);
+    }
+
+    @Test
+    void testGetPassPercentage_SingleStudent() {
+        List<Student> students = new ArrayList<>();
+
+        students.add(new Student("Grok", 2, 43.0));
+
+        assertEquals(100.0, Student.getPassPercentage(students), 0.001);
+    }
 }
 

@@ -21,14 +21,25 @@ public class Student {
     public String getName() { return name; }
     public int getRollNumber() { return rollNumber; }
     public double getMarks() { return marks; }
-
+    
+    /**
+     * Sets the marks for the student and handles validation.
+     * @param marks the new marks for the students
+     * @throws IllegalArgumentException if marks are not between 0 and 100.
+     */
     public void setMarks(double marks) {
             if (marks < 0 || marks > 100) {
                 throw new IllegalArgumentException("Marks must be between 0 and 100.");
             }
             this.marks = marks;
     }
-
+    
+    /**
+     * Finds the student with highest marks from a list of students.
+     * Handles null or empty list by returning null.
+     * @param students the list of students.
+     * @return the student with the highest marks, or null if the list is empty or null.
+     */
     public static Student findHighestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
         
@@ -41,6 +52,12 @@ public class Student {
         return highest;
     }
 
+    /**
+     * Finds the student with highest marks from a list of students.
+     * Handles null or empty list by returning null.
+     * @param students the list of students.
+     * @return the student with the lowest marks, or null if the list is empty or null.
+     */
     public static Student findLowestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
 
@@ -53,6 +70,11 @@ public class Student {
         return lowest;
     } 
 
+    /**
+     * Counts the number of students who passed (marks >= 40) in the given list.
+     * @param students the list of students to evaluate.
+     * @return the number of students who passed. Returns 0 if the list is null or empty.
+     */
     public static int countPassed(List<Student> students) {
         if (students == null || students.isEmpty()) return 0;
 
@@ -65,6 +87,12 @@ public class Student {
         return count;
     }
 
+    /**
+     * Calculate the pass percentage of students in the given list.
+     * A student is considered to have passed if their marks are 40 or above.
+     * @param students the list of students to evaluate.
+     * @return the pass percentage as a double. Return 0.0 if the list is null or empty.
+     */
     public static double getPassPercentage(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
@@ -72,6 +100,14 @@ public class Student {
         return (passed * 100.0) / students.size();
     }
 
+    /**
+     * Calculates the median marks from a list of students. 
+     * The median is the middle value when the marks are sorted.
+     * If there are even number of students, median is the average of the middle two values.
+     * If there are odd number of students, the median is middle value.
+     * @param students the list of students to evaluate.
+     * @return the median marks as a double. Returns 0.0 if the list is null or empty.
+     */
     public static double getMedianMarks(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
@@ -90,6 +126,12 @@ public class Student {
         }
     }
 
+    /**
+     * Generates a summary report for a class of students.
+     * Includes the total number of students, average marks, pass percentage, number of passed and failed students, and the number of students in each grade category (A, B, C, D, F).
+     * @param students the list of students to evaluate.
+     * @return the summary report as a formatted string. Returns "No students in the class." if the list is null or empty.
+     */
     public static String getClassSummary(List<Student> students) {
         if (students == null || students.isEmpty()) return "No students in the class.";
 
@@ -114,6 +156,11 @@ public class Student {
         );
     }
  
+    /**
+     * Finds the top 3 students with the highest marks from a list of students.
+     * @param students the list of students to evaluate.
+     * @return a list of the top 3 students sorted by marks in decreasing order. If there are fewer than 3 students, returns all them sorted. Returns an empty list if the list is null or empty.
+     */
     public static List<Student> getTop3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -124,6 +171,11 @@ public class Student {
         return sorted.subList(0, limit);
     }
 
+    /**
+     * Finds the bottom 3 students with the lowest marks from a list of students.
+     * @param students the list of students to evaluate.
+     * @return a list of the bottom 3 students sorted by marks in the decreasing order. If there are fewer than 3 students, returns all them sorted. Returns an empty list if the list is null or empty.
+     */
     public static List<Student> getBottom3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -134,6 +186,11 @@ public class Student {
         return sorted.subList(0, limit);
     }
 
+    /**
+     * Generates a list of students who failed (marks < 40) from a list of students.
+     * @param students the list of students to evaluate.
+     * @return a list of students who failed. Returns an empty list if the list is empty, null, or if no students failed.
+     */
     public static List<Student> getFailedStudents(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -146,11 +203,26 @@ public class Student {
         return failed;
     }
 
+    /**
+     * Determines if student has passed or failed based on their marks.
+     * A student is considered to have passed if their marks are 40 or above, and failed if otherwise.
+     * @return true if the student has passed, false if otherwise.
+     */
     public boolean isPassed() {
         if (marks >= 40) return true;
         return false;
     }
 
+    /**
+     * Determines the grade of a student based of their marks.
+     * The grading system is as follows:
+     * Marks >= 90: Grade A
+     * Marks >= 75 and < 90: Grade B
+     * Marks >= 60 and < 75: Grade C
+     * Marks >= 40 and < 60: Grade D
+     * Marks < 40: Grade F
+     * @return the grade of the student as a string.
+     */
     public String getGrade() {
         if (marks >= 90) return "A";
         if (marks >= 75) return "B";
@@ -159,8 +231,13 @@ public class Student {
         return "F";
     }
 
+    /**
+     * Calculates the average marks of a list of students.
+     * @param students the list of students to evaluate.
+     * @return the average marks of the students as a double. Return 0.0 if the list is null or empty.
+     */
     public static double getAvgMarks(List<Student> students) {
-        if (students.isEmpty()) return 0;
+        if (students == null || students.isEmpty()) return 0.0;
 
         double sum = 0;
         for (Student s: students) {
@@ -169,6 +246,10 @@ public class Student {
         return sum / students.size();
     }
 
+    /**
+     * Return a string representation of the student object, including their roll number, name, marks, grade, and pass/fail status.
+     * @return a formatted string representing the student's details.
+     */
     @Override
     public String toString() {
         return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");

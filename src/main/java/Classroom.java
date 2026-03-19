@@ -15,7 +15,9 @@ public class Classroom {
     }
 
     public String getClassName() { return className; }
-    public List<Student> getStudents() { return students; }
+    public List<Student> getStudents() {
+        return new ArrayList<>(students);
+    }
 
     public void addStudent(Student student) {
         if (student == null) {
@@ -50,6 +52,23 @@ public class Classroom {
 
     public String getSummary() {
         return Student.getClassSummary(students);
+    }
+
+    /**
+     * Adds multiple students to the classroom at once.
+     * @param newStudents the list of students to be added.
+     * @throws IllegalArgumentException if the input is null.
+     */
+    public void addMultipleStudents(List<Student> newStudents) {
+        if (newStudents == null) {
+            throw new IllegalArgumentException("Student list cannot be null.");
+        }
+        for (Student s: newStudents) {
+            if (s == null) {
+                throw new IllegalArgumentException("Individual student cannot be null.");
+            }
+            students.add(s);
+        }
     }
 
     @Override

@@ -39,4 +39,33 @@ public class ClassroomTest {
 
         assertEquals(50.0, classroom.getPassPercentage(), 0.001);
     }
+
+    @Test
+    void testAddMultipleStudents_NormalList() {
+        Classroom classroom = new Classroom("10A");
+        List<Student> newStudents = new ArrayList<>();
+        newStudents.add(new Student("Grok", 1, 34.2));
+        newStudents.add(new Student("Caster", 2, 43.2));
+
+        classroom.addMultipleStudents(newStudents);
+
+        assertEquals(2, classroom.getStudents().size());
+    }
+
+    @Test
+    void testAddMultipleStudents_NullList_ThrowsException() {
+        Classroom classroom = new Classroom("10A");
+
+        assertThrows(IllegalArgumentException.class, () -> classroom.addMultipleStudents(null));
+    }
+
+    @Test
+    void testAddMultipleStudents_NullEntries_ThrowsException() {
+        Classroom classroom = new Classroom("10A");
+        List<Student> newStudents = new ArrayList<>();
+        newStudents.add(new Student("Grok", 1, 13.2));
+        newStudents.add(null);
+
+        assertThrows(IllegalArgumentException.class, () -> classroom.addMultipleStudents(newStudents));
+    }
 }

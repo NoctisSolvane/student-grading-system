@@ -398,5 +398,85 @@ public class StudentTest{
 
         assertEquals(100.0, Student.getPassPercentage(students), 0.001);
     }
+
+    @Test
+    void testGetStudentsByGrade_NormalList() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Delilah", 1, 99.4));
+        students.add(new Student("Julian", 2, 86));
+        students.add(new Student("Aofie", 3, 67));
+        students.add(new Student("Evelyn", 4, 49.2));
+        students.add(new Student("Kiera", 5, 31.8));
+
+        List<Student> aStudents = Student.getStudentsByGrade(students, 'A');
+        assertEquals(1, aStudents.size());
+        assertEquals("Delilah", aStudents.get(0).getName());
+
+        List<Student> fStudents = Student.getStudentsByGrade(students, 'f');
+        assertEquals(1, fStudents.size());
+        assertEquals("Kiera", fStudents.get(0).getName());
+
+        List<Student> bStudents = Student.getStudentsByGrade(students, 'B');
+        assertEquals(1, bStudents.size());
+        assertEquals("Julian", bStudents.get(0).getName());
+
+        List<Student> cStudents = Student.getStudentsByGrade(students, 'C');
+        assertEquals(1, cStudents.size());
+        assertEquals("Aofie", cStudents.get(0).getName());
+
+        List<Student> dStudents = Student.getStudentsByGrade(students, 'D');
+        assertEquals(1, dStudents.size());
+        assertEquals("Evelyn", dStudents.get(0).getName());
+    }
+    
+    @Test
+    void testGetStudentsByGrade_InvalidGrade() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Ichigo", 1, 80.0));
+
+        assertTrue(Student.getStudentsByGrade(students, 'X').isEmpty());
+    }
+    
+    @Test
+    void testGetStudentByGrade_emptyORnull() {
+        assertTrue(Student.getStudentsByGrade(new ArrayList<>(), 'A').isEmpty());
+        assertTrue(Student.getStudentsByGrade(null, 'B').isEmpty());
+    }
+    
+    @Test
+    void testGetStudentByRoll_NormalList() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Luffy", 1, 32.3));
+        students.add(new Student("Zoro", 2, 66.2));
+        students.add(new Student("Sanji", 3, 42.9));
+        students.add(new Student("Robin", 4, 73.2));
+        students.add(new Student("Chopper", 5, 83.2));
+        students.add(new Student("Nami", 6, 94.2));
+
+        assertEquals("Nami", Student.getStudentByRoll(students, 6).getName());
+    }
+
+    @Test
+    void testGetStudentByRoll_NotFound() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Franky", 1, 43.2));
+
+        assertNull(Student.getStudentByRoll(students, 2423));
+    }
+
+    @Test
+    void testGetStudentByRoll_emptyORnull() {
+        assertNull(Student.getStudentByRoll(new ArrayList<>(), 32));
+        assertNull(Student.getStudentByRoll(null, 43));
+    }
+
+    @Test
+    void testGetStudentByRoll_InvalidRoll() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Leon", 43, 89.2));
+
+        assertNull(Student.getStudentByRoll(students, 0));
+        assertNull(Student.getStudentByRoll(students, -67));
+    }
 }
 

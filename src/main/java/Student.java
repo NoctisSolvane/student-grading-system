@@ -247,6 +247,47 @@ public class Student {
     }
 
     /**
+     * Returns a list of all students who received the given grade.
+     * Grade matching is case-insensitive (e.g. 'A' is the same as 'a').
+     * @param students the list of students to search.
+     * @param grade the grade to match (A, B, C, D, F).
+     * @return list of matching students; empty list if none match or input is invalid.
+     */
+    public static List<Student> getStudentsByGrade(List<Student> students, char grade) {
+        if (students == null || students.isEmpty()) return new ArrayList<>();
+
+        char upperGrade = Character.toUpperCase(grade);
+        if (upperGrade != 'A' && upperGrade != 'B' && upperGrade != 'C' && upperGrade != 'D' && upperGrade != 'F') {
+            return new ArrayList<>();
+        }
+        List<Student> result = new ArrayList<>();
+        for (Student s: students) {
+            String gradeStr = s.getGrade();
+            if (gradeStr.length() == 1 && Character.toUpperCase(s.getGrade().charAt(0)) == upperGrade) {
+                result.add(s);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Finds a student by their roll number.
+     * @param students the list of students to search.
+     * @param roll the roll no. to find.
+     * @return the matching student or null if not found or list is null/empty.
+     */
+    public static Student getStudentByRoll(List<Student> students, int roll) {
+        if (students == null || students.isEmpty() || roll <= 0) return null;
+
+        for (Student s: students) {
+            if(s.getRollNumber() == roll) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Return a string representation of the student object, including their roll number, name, marks, grade, and pass/fail status.
      * @return a formatted string representing the student's details.
      */

@@ -465,7 +465,7 @@ public class StudentTest{
     }
 
     @Test
-    void testGetStudentByRoll_emptyORnull() {
+    void testGetStudentByRoll_emptyORnull_ReturnEmptyList() {
         assertNull(Student.getStudentByRoll(new ArrayList<>(), 32));
         assertNull(Student.getStudentByRoll(null, 43));
     }
@@ -477,6 +477,76 @@ public class StudentTest{
 
         assertNull(Student.getStudentByRoll(students, 0));
         assertNull(Student.getStudentByRoll(students, -67));
+    }
+
+    @Test
+    void testGetStudentByRoll_DuplicateRoll_ReturnsFirstMatch() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Kaneki", 1, 69.7));
+        students.add(new Student("Touka", 1, 67.9));
+
+        assertEquals("Kaneki", Student.getStudentByRoll(students, 1).getName());
+    }
+
+    @Test
+    void testSortStudentsByName_normal() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Jonathan", 1, 67.3));
+        students.add(new Student("Diego", 2, 13.3));
+        students.add(new Student("Zappili", 3, 65.1));
+
+        List<Student> sorted = Student.sortStudentsByName(students);
+        assertEquals(3, sorted.size());
+        assertEquals("Diego", sorted.get(0).getName());
+        assertEquals("Jonathan", sorted.get(1).getName());
+        assertEquals("Zappili", sorted.get(2).getName());
+
+        // Original list unchanged:
+        assertEquals("Jonathan", students.get(0).getName());
+    }
+
+    @Test
+    void testSortStudentsByName_caseInsensitive() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("ruskin", 1, 54.2));
+        students.add(new Student("Kirk", 2, 43.1));
+        students.add(new Student("NAOYA", 3, 76.2));
+
+        List<Student> sorted = Student.sortStudentsByName(students);
+        assertEquals("Kirk", sorted.get(0).getName());
+        assertEquals("NAOYA", sorted.get(1).getName());
+        assertEquals("ruskin", sorted.get(2).getName());
+    }
+
+    @Test
+    void testSortStudentsByName_emptyORnull() {
+        assertTrue(Student.sortStudentsByName(new ArrayList<>()).isEmpty());
+        assertTrue(Student.sortStudentsByName(null).isEmpty());
+    }
+
+    @Test
+    void testRemoveStudentByRoll_normal() {
+        List<Student> students = new ArrayList<>();
+        Student toRemove = new Student("RemoveMe", 1, 54.2);
+        students.add(toRemove);
+        students.add(new Student("KeepMe", 2, 65.2));
+
+        boolean removed = Student.removeStudentByRoll(students, 1);
+        assertTrue(removed);
+        assertEquals(1, students.size());
+        assertEquals("KeepMe", students.get(0).getName());
+    }
+
+    @Test
+    void testRemoveStudentByRoll_notFoundOrInvalid() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Frey", 1, 97.3));
+
+        assertFalse(Student.removeStudentByRoll(students, 99));   // not found
+        assertFalse(Student.removeStudentByRoll(students, -67));    // invalid
+        assertFalse(Student.removeStudentByRoll(null, 1));    // null list
+
+        assertTrue(Student.removeStudentByRoll(students, 1));
     }
 }
 

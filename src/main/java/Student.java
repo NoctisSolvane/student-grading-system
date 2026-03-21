@@ -256,9 +256,9 @@ public class Student {
     public static List<Student> getStudentsByGrade(List<Student> students, char grade) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        char upperGrade = Character.toUpperCase(grade);
+        char upperGrade = Character.toUpperCase(grade); // Removes case-insensitivity.
         if (upperGrade != 'A' && upperGrade != 'B' && upperGrade != 'C' && upperGrade != 'D' && upperGrade != 'F') {
-            return new ArrayList<>();
+            return new ArrayList<>(); 
         }
         List<Student> result = new ArrayList<>();
         for (Student s: students) {
@@ -280,11 +280,37 @@ public class Student {
         if (students == null || students.isEmpty() || roll <= 0) return null;
 
         for (Student s: students) {
-            if(s.getRollNumber() == roll) {
+            if (s.getRollNumber() == roll) {
                 return s;
             }
         }
         return null;
+    }
+
+    /**
+     * Returns a new list of students sorted alphabetically by name (case-insensitive).
+     * Original list is not modified.
+     * @param students list of students to modify.
+     * @return sorted list by name (A-Z), empty list if input is empty or null.
+     */
+    public static List<Student> sortStudentsByName(List<Student> students) {
+        if (students == null || students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+        return sorted;
+    }
+
+    /**
+     * Removes the student with the given roll number from the list.
+     * @param students list of students to modify.
+     * @param roll the roll number to remove.
+     * @return true if a student was removed, false if no match or input invalid.
+     */
+    public static boolean removeStudentByRoll(List<Student> students, int roll) {
+        if (students == null || students.isEmpty() || roll <= 0) return false;
+
+        return students.removeIf(s -> s.getRollNumber() == roll);
     }
 
     /**

@@ -19,6 +19,12 @@ public class Classroom {
         return new ArrayList<>(students);
     }
 
+    /**
+     * Adds a new student to the existing list of students.
+     * @param student the list of students to modify.
+     * @return the modified list of students.
+     * @throws IllegalArgumentException if student details are null.
+     */
     public void addStudent(Student student) {
         if (student == null) {
             throw new IllegalArgumentException("Student cannot be null.");

@@ -314,6 +314,20 @@ public class Student {
     }
 
     /**
+     * Returns a list of students sorted by marks in descending order (highest first).
+     * Original list isn't modified.
+     * @param students the list of students to sort
+     * @return new sorted list, empty if input is null or empty
+     */
+    public static List<Student> sortByMarksDescending(List<Student> students) {
+        if (students == null || students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> Double.compare(b.getMarks(), a.getMarks()));
+        return sorted;
+    }
+
+    /**
      * Return a string representation of the student object, including their roll number, name, marks, grade, and pass/fail status.
      * @return a formatted string representing the student's details.
      */

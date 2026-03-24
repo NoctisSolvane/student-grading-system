@@ -548,5 +548,37 @@ public class StudentTest{
 
         assertTrue(Student.removeStudentByRoll(students, 1));
     }
+
+    @Test
+    void testSortByMarksDescending_normalList() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Low", 1, 23.2));
+        students.add(new Student("High", 2, 78));
+        students.add(new Student("Mid", 3, 56.2));
+
+        List<Student> sorted = Student.sortByMarksDescending(students);
+        assertEquals(3, sorted.size());
+        assertEquals("High", sorted.get(0).getName());
+        assertEquals("Mid", sorted.get(1).getName());
+        assertEquals("Low", sorted.get(2).getName());
+    }
+
+    @Test
+    void testSortByMarksDescending_nullORempty() {
+        assertTrue(Student.sortByMarksDescending(new ArrayList<>()).isEmpty());
+        assertTrue(Student.sortByMarksDescending(null).isEmpty());
+    }
+
+    @Test
+    void testSortByMarksDescending_duplicateMarks() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("A", 1, 80.1));
+        students.add(new Student("B", 2, 80.1));
+        students.add(new Student("C", 3, 56.2));
+
+        List<Student> sorted = Student.sortByMarksDescending(students);
+        assertEquals(3, sorted.size());
+        // A and B should both be on the top, order among ties can be any.
+    }
 }
 

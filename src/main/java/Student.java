@@ -23,9 +23,13 @@ public class Student {
     public double getMarks() { return marks; }
     
     /**
-     * Sets the marks for the student and handles validation.
+     * Sets the marks for the student and handles validation. 
+     * <p> 
+     * Marks are allowed only between 0 and 100.
+     * </p>
+     * 
      * @param marks the new marks for the students
-     * @throws IllegalArgumentException if marks are not between 0 and 100.
+     * @throws IllegalArgumentException if marks are not between 0 and 100
      */
     public void setMarks(double marks) {
             if (marks < 0 || marks > 100) {
@@ -36,9 +40,16 @@ public class Student {
     
     /**
      * Finds the student with highest marks from a list of students.
-     * Handles null or empty list by returning null.
-     * @param students the list of students.
-     * @return the student with the highest marks, or null if the list is empty or null.
+     * <p>
+     * Handles {@code null} or empty list by returning null.
+     * <p>
+     * Uses marks from {@link #setMarks(double)}.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @param marks the marks of a student, must be between 0 and 100
+     * @return the student with the highest marks,
+     *                     or {@code null} if the student is empty
      */
     public static Student findHighestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
@@ -53,10 +64,17 @@ public class Student {
     }
 
     /**
-     * Finds the student with highest marks from a list of students.
-     * Handles null or empty list by returning null.
-     * @param students the list of students.
-     * @return the student with the lowest marks, or null if the list is empty or null.
+     * Finds the student with lowest marks from a list of students.
+     * <p>
+     * Handles {@code null} or empty list by returning null.
+     * <p>
+     * Uses marks from {@link #setMarks(double)}.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @param marks the marks of a student, must be between 0 and 100
+     * @return the student with the lowest marks,
+     *                     or {@code null} if the student is empty
      */
     public static Student findLowestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
@@ -71,9 +89,17 @@ public class Student {
     } 
 
     /**
-     * Counts the number of students who passed (marks >= 40) in the given list.
-     * @param students the list of students to evaluate.
-     * @return the number of students who passed. Returns 0 if the list is null or empty.
+     * Counts the number of students who passed in the given list.
+     * <p>
+     * Passing criteria is: marks >= 40.
+     * <p>
+     * Uses marks from {@link #setMarks(double)}.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @param marks the marks of a student, must be between 0 and 100
+     * @return the number of students who passed,
+     *                    or 0 if the list is {@code null} or empty
      */
     public static int countPassed(List<Student> students) {
         if (students == null || students.isEmpty()) return 0;
@@ -89,9 +115,17 @@ public class Student {
 
     /**
      * Calculate the pass percentage of students in the given list.
+     * <p>
+     * Pass percentage is the percentage of students who have passed.
+     * <p>
      * A student is considered to have passed if their marks are 40 or above.
-     * @param students the list of students to evaluate.
-     * @return the pass percentage as a double. Return 0.0 if the list is null or empty.
+     * <p>
+     * Uses {@link #countPassed(List)} for finding the number of students who have passed.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @return the pass percentage as a double,
+     *             or 0.0 if the list is {@code null} or empty
      */
     public static double getPassPercentage(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
@@ -102,11 +136,17 @@ public class Student {
 
     /**
      * Calculates the median marks from a list of students. 
-     * The median is the middle value when the marks are sorted.
+     * <p>
+     * The original list is not modified and a new sorted list is created.
+     * The median is the middle value of this modified list.
+     * <p>
      * If there are even number of students, median is the average of the middle two values.
      * If there are odd number of students, the median is middle value.
-     * @param students the list of students to evaluate.
-     * @return the median marks as a double. Returns 0.0 if the list is null or empty.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @return the median marks as a double,
+     *             or 0.0 if the list is {@code null} or empty
      */
     public static double getMedianMarks(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
@@ -127,10 +167,28 @@ public class Student {
     }
 
     /**
-     * Generates a summary report for a class of students.
+     * Generates a detailed summary report for a class of students.
+     * <p>
      * Includes the total number of students, average marks, pass percentage, number of passed and failed students, and the number of students in each grade category (A, B, C, D, F).
-     * @param students the list of students to evaluate.
-     * @return the summary report as a formatted string. Returns "No students in the class." if the list is null or empty.
+     * <p>
+     * Used methods: 
+     * {@link #countPassed(List)}
+     * {@link #getPassPercentage(List)}
+     * {@link #getAvgMarks(List)}
+     * {@link #findHighestScorer(List)}
+     * {@link #findLowestScorer(List)}
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @return the summary report as a formatted string:
+     * <pre>{@code
+     * Class Summary (3 students): 
+     * Average Marks: 67.69
+     * Pass Percentage: 66.67
+     * Passed: 2 | Failed: 1
+     * Highest Scorer: Urahara
+     * Lowest Scorer: Ichigo}</pre>
+     * @return "No students in the class." if the list is {@code null} or empty
      */
     public static String getClassSummary(List<Student> students) {
         if (students == null || students.isEmpty()) return "No students in the class.";
@@ -157,9 +215,18 @@ public class Student {
     }
  
     /**
-     * Finds the top 3 students with the highest marks from a list of students.
-     * @param students the list of students to evaluate.
-     * @return a list of the top 3 students sorted by marks in decreasing order. If there are fewer than 3 students, returns all them sorted. Returns an empty list if the list is null or empty.
+     * Finds 3 students with the highest marks from a list of students.
+     * <p>
+     * The original list is not modified and a new sorted list is created.
+     * <p>
+     * A {@code limit(int)} is defined for a list having less than 3 students.
+     * If the no. students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @return a list of the top 3 students sorted by marks in decreasing order
+     * @return all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0
+     * @return an empty list if the list of students is {@code null} or empty
      */
     public static List<Student> getTop3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -172,9 +239,18 @@ public class Student {
     }
 
     /**
-     * Finds the bottom 3 students with the lowest marks from a list of students.
-     * @param students the list of students to evaluate.
-     * @return a list of the bottom 3 students sorted by marks in the decreasing order. If there are fewer than 3 students, returns all them sorted. Returns an empty list if the list is null or empty.
+     * Finds 3 students with the lowest marks from a list of students.
+     * <p>
+     * The original list is not modified and a new sorted list is created.
+     * <p>
+     * A {@code limit(int)} is defined for a list having less than 3 students.
+     * If the no. of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @return a list of the bottom 3 students sorted by marks in the decreasing order 
+     * @return all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0
+     * @return an empty list if the list of students is {@code null} or empty
      */
     public static List<Student> getBottom3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -187,9 +263,16 @@ public class Student {
     }
 
     /**
-     * Generates a list of students who failed (marks < 40) from a list of students.
-     * @param students the list of students to evaluate.
-     * @return a list of students who failed. Returns an empty list if the list is empty, null, or if no students failed.
+     * Generates a list of students who failed from a list of students.
+     * <p>
+     * Failing criteria is: marks < 40.
+     * <p>
+     * Use {@link #setMarks(double)}.
+     * </p>
+     * 
+     * @param students the list of students to evaluate, may be {@code null}
+     * @return a list of students who failed, 
+     *           or an empty list if the list of students is {@code null}, empty or if no students fail
      */
     public static List<Student> getFailedStudents(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -205,8 +288,14 @@ public class Student {
 
     /**
      * Determines if student has passed or failed based on their marks.
+     * <p>
      * A student is considered to have passed if their marks are 40 or above, and failed if otherwise.
-     * @return true if the student has passed, false if otherwise.
+     * <p>
+     * Uses {@link #setMarks(double)}.
+     * </p>
+     * 
+     * @param marks the marks of a student, must be between 0 and 100
+     * @return {@code true} if the student has passed, {@code false} if otherwise
      */
     public boolean isPassed() {
         if (marks >= 40) return true;
@@ -214,13 +303,17 @@ public class Student {
     }
 
     /**
-     * Determines the grade of a student based of their marks.
+     * Determines the grade of a student based on their marks.
+     * <p>
      * The grading system is as follows:
      * Marks >= 90: Grade A
      * Marks >= 75 and < 90: Grade B
      * Marks >= 60 and < 75: Grade C
      * Marks >= 40 and < 60: Grade D
      * Marks < 40: Grade F
+     * </p>
+     * 
+     * @param marks the marks of a student, must be between 0 and 100
      * @return the grade of the student as a string.
      */
     public String getGrade() {
@@ -232,9 +325,14 @@ public class Student {
     }
 
     /**
-     * Calculates the average marks of a list of students.
-     * @param students the list of students to evaluate.
-     * @return the average marks of the students as a double. Return 0.0 if the list is null or empty.
+     * Calculates the average marks from the marks of the list of students.
+     * <p>
+     * Average is the sum of all marks divided by the {@code students.size()} -> the no. of students.
+     * </p>
+     * @param students the list of students to evaluate, may be {@code null}
+     * @param marks the marks of a student, must be between 0 and 100
+     * @return the average marks of the students as a double,
+     *         or return 0.0 if the list is {@code null} or empty
      */
     public static double getAvgMarks(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
@@ -248,10 +346,21 @@ public class Student {
 
     /**
      * Returns a list of all students who received the given grade.
+     * <p>
      * Grade matching is case-insensitive (e.g. 'A' is the same as 'a').
-     * @param students the list of students to search.
+     * A new {@code upperGrade(char)} is created for removing case-insensitivity.
+     * <p>
+     * The original list is not modified and an emtpy list {@code List<Student> result} is created.
+     * This new list contains students which satisfy the following conditions:
+     * <pre>
+     * {@code if (s.getGrade().length == 1 && Charachter.toUpperCase(s.getGrade().charAt(0)) == Charachter.toUpperCase(char grade))}
+     * </pre>
+     * </p>
+     * 
+     * @param students the list of students to search, may be {@code null}
      * @param grade the grade to match (A, B, C, D, F).
-     * @return list of matching students; empty list if none match or input is invalid.
+     * @return list of matching students with the given grade,
+     *                 or an empty list if the list of students is {@code null} or empty
      */
     public static List<Student> getStudentsByGrade(List<Student> students, char grade) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -263,7 +372,7 @@ public class Student {
         List<Student> result = new ArrayList<>();
         for (Student s: students) {
             String gradeStr = s.getGrade();
-            if (gradeStr.length() == 1 && Character.toUpperCase(s.getGrade().charAt(0)) == upperGrade) {
+            if (gradeStr.length() == 1 && Character.toUpperCase(gradeStr.charAt(0)) == upperGrade) {
                 result.add(s);
             }
         }
@@ -271,10 +380,14 @@ public class Student {
     }
 
     /**
-     * Finds a student by their roll number.
-     * @param students the list of students to search.
-     * @param roll the roll no. to find.
-     * @return the matching student or null if not found or list is null/empty.
+     * Finds a student by their roll number from a given list of students.
+     * <p>
+     * In case of matching roll numbers, the first instance of the roll number is considered.
+     * </p>
+     * @param students the list of students to search, may be {@code null}
+     * @param roll the roll noumber to find, must be > 0
+     * @return the matching student,
+     *             or null if the list of students is {@code null} or empty or the roll number is <= 0
      */
     public static Student getStudentByRoll(List<Student> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return null;
@@ -288,10 +401,19 @@ public class Student {
     }
 
     /**
-     * Returns a new list of students sorted alphabetically by name (case-insensitive).
-     * Original list is not modified.
-     * @param students list of students to modify.
-     * @return sorted list by name (A-Z), empty list if input is empty or null.
+     * Returns a new list of students sorted alphabetically by name.
+     * <p>
+     * Original list is not modified. Creates a new list - {@code List<Student> sorted(students)} which is a copy of the original one.
+     * <p>
+     * The new list is sorted in alphabetical order, while ignoring case sensitivity, using the following:
+     * <pre>
+     * {@code sorted.sort((a,b) -> a.getName().compareToIgnoreCase(b.getName()))}
+     * </pre>
+     * </p>
+     * 
+     * @param students list of students to modify, may be {@code null}
+     * @return sorted list by name (A-Z),
+     *                or empty list if the list of students is {@code null} or empty
      */
     public static List<Student> sortStudentsByName(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -302,10 +424,17 @@ public class Student {
     }
 
     /**
-     * Removes the student with the given roll number from the list.
-     * @param students list of students to modify.
-     * @param roll the roll number to remove.
-     * @return true if a student was removed, false if no match or input invalid.
+     * Removes the student with the given roll number from the list of students.
+     * <p>
+     * Returns the modified list as:
+     * <pre> 
+     * {@code return students.removeIf(s -> s.getRollNumber() == roll)}
+     * </pre>
+     * </p>
+     * 
+     * @param students list of students to modify, may be {@code null}
+     * @param roll the roll number to remove, must be > 0
+     * @return {@code true} if a student was removed, {@code false} if no match or if the list of students is {@code null} or empty
      */
     public static boolean removeStudentByRoll(List<Student> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return false;
@@ -314,10 +443,14 @@ public class Student {
     }
 
     /**
-     * Returns a list of students sorted by marks in descending order (highest first).
-     * Original list isn't modified.
-     * @param students the list of students to sort
-     * @return new sorted list, empty if input is null or empty
+     * Returns a new list of students containing the students sorted by marks in descending order (highest first).
+     * <p>
+     * Original list is not modified. The sorting is stable for students with equal marks.
+     * </p>
+     * 
+     * @param students the list of students to sort, may be {@code null}
+     * @return new sorted list by marks in descending order,
+     *              or an empty list if input is {@code null} or empty
      */
     public static List<Student> sortByMarksDescending(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -328,8 +461,14 @@ public class Student {
     }
 
     /**
-     * Return a string representation of the student object, including their roll number, name, marks, grade, and pass/fail status.
-     * @return a formatted string representing the student's details.
+     * Returns a string representation of the student object.
+     * <p>
+     * Includes their roll number, name, marks, grade, and pass/fail status.
+     * </p>
+     * @return a formatted string representing the student's details:
+     * <pre>
+     * {@code Roll: 2 | Name: Yoruichi | Marks: 89.37 | Grade: B | Status: Passed}
+     * </pre>
      */
     @Override
     public String toString() {

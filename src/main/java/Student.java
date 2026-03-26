@@ -9,6 +9,25 @@ public class Student {
     private int rollNumber;
     private double marks;
 
+    /**
+     * Represents a student having name, roll number and marks.
+     * <p>
+     * All {@code Student(String name, int rollNumber, double marks)} are stored in a list {@code students}.
+     * <p>
+     * Many methods to manage a {@code Student} are present in the class:
+     * - Getters:
+     * {@link #getName()}
+     * {@link #getRollNumber()}
+     * {@link #getMarks()}
+     * - Validators:
+     * {@link #getValidString(Scanner, String)}
+     * {@link #getValidInt(Scanner, String, int, int)}
+     * {@link #getValidDouble(Scanner, String, double, double)}
+     * 
+     * @param name the name of the student, should be {@code String}, should not be empty
+     * @param rollNumber the roll number of the student, should be {@code int} and positive (>0)
+     * @param marks the marks of the students, should be {@code double} and between 0 and 100
+     */
     public Student(String name, int rollNumber, double marks) {
         if (marks < 0 || marks > 100) {
             throw new IllegalArgumentException("Marks must be between 0 and 100.");
@@ -504,7 +523,25 @@ public class Student {
         scanner.close();
     }
 
-        private static int getValidInt(Scanner sc, String prompt, int min, int max) {
+    /**
+     * Validates integer input on scanner and returns the scanner if invalid.
+     * <p>
+     * The value of the integer should be between the given {@code int min} and {@code int max}.
+     * <p> 
+     * If {@code int val < int min || int val > int max}, another {@code Scanner sc} is returned.
+     * <p>
+     * If the input is not an integer, using {@code catch (Exception e)} another {@code Scanner sc} is returned.
+     * </p>
+     * 
+     * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input into tokens
+     * @param prompt the addiitional {@code String} that is provided by the user along with the integer input
+     * @param min the minimum value of the integer input (provided by the user)
+     * @param max the maximum value of the integer input (provided by the user)
+     * @return the integer input of {@code Scanner sc} ({@code int val}) if it is between {@code min} and {@code max}
+     * @return "Must be between {@code int min} and {@code int max}. Try again." and another {@code Scanner sc} if the input is an invalid integer
+     * @return "That's not a number, idiot. Try again." and another {@code Scanner sc} if the input is not an integer
+     */    
+    private static int getValidInt(Scanner sc, String prompt, int min, int max) {
         while (true) {
             try {
                 System.out.print(prompt + ": ");
@@ -523,6 +560,24 @@ public class Student {
         }
     }
    
+    /**
+     * Validates double (decimal) input on scanner, and returns the scanner if invalid.
+     * <p>
+     * The value of the double should be between the given {@code double min} and {@code double max}.
+     * <p>
+     * If {@code double val < double min || double val > double max} another {@code Scanner sc} is returned.
+     * <p>
+     * If the input is not a double, using {@code catch (Exception e)} another {@code Scanner sc} is returned.
+     * </p>
+     * 
+     * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input as tokens
+     * @param prompt the additional {@code String} that is provided by the user along with the double input
+     * @param min the minimum value of the double input (provided by the user)
+     * @param max the maximum value of the double input (provided by the user)
+     * @return the double input of {@code Scanner sc} ({@code double val}) if it is between {@code min} and {@code max}
+     * @return "Must be between {@code double min} and {@code double max}. Try again." and another {@code Scanner sc} if the input is an invalid double
+     * @return "That's not a number, idiot. Try again." and another {@code Scanner sc} if the input is not a double
+     */
     private static double getValidDouble(Scanner sc, String prompt, double min, double max) {
         while (true) {
             try {
@@ -542,6 +597,19 @@ public class Student {
         }
     }
    
+    /**
+     * Validates string input on scanner, and returns the scanner if invalid.
+     * <p>
+     * The input of {@code Scanner sc} should not be empty and if it is, another {@code Scanner sc} is returned.
+     * <p>
+     * Uses the {@code sc.nextLine().trim()} to remove any leading or trailing spaces
+     * </p>
+     *  
+     * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input as tokens
+     * @param prompt the additional {@code String} that is provided by the user along with the string input
+     * @return the string input of {@code Scanner sc} ({@code String input}) if the input is not empty
+     * @return "Don't leave it empty, dumbass." if {@code input.isEmpty()}
+     */
     private static String getValidString(Scanner sc, String prompt) {
         while (true) {
             System.out.print(prompt + ": ");

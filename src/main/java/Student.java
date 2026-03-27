@@ -37,8 +37,11 @@ public class Student {
         this.marks = marks;
         }
 
+    /** Returns the student's name. */
     public String getName() { return name; }
+    /** Returns the student's roll number. */
     public int getRollNumber() { return rollNumber; }
+    /** Returns the student's marks. */
     public double getMarks() { return marks; }
     
     /**
@@ -61,12 +64,9 @@ public class Student {
      * Finds the student with highest marks from a list of students.
      * <p>
      * Handles {@code null} or empty list by returning null.
-     * <p>
-     * Uses marks from {@link #setMarks(double)}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
-     * @param marks the marks of a student, must be between 0 and 100
      * @return the student with the highest marks,
      *                     or {@code null} if the student is empty
      */
@@ -86,12 +86,9 @@ public class Student {
      * Finds the student with lowest marks from a list of students.
      * <p>
      * Handles {@code null} or empty list by returning null.
-     * <p>
-     * Uses marks from {@link #setMarks(double)}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
-     * @param marks the marks of a student, must be between 0 and 100
      * @return the student with the lowest marks,
      *                     or {@code null} if the student is empty
      */
@@ -111,14 +108,11 @@ public class Student {
      * Counts the number of students who passed in the given list.
      * <p>
      * Passing criteria is: marks >= 40.
-     * <p>
-     * Uses marks from {@link #setMarks(double)}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
-     * @param marks the marks of a student, must be between 0 and 100
      * @return the number of students who passed,
-     *                    or 0 if the list is {@code null} or empty
+     *                    or {@code 0} if the list is {@code null} or empty
      */
     public static int countPassed(List<Student> students) {
         if (students == null || students.isEmpty()) return 0;
@@ -144,7 +138,7 @@ public class Student {
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return the pass percentage as a double,
-     *             or 0.0 if the list is {@code null} or empty
+     *             or {@code 0.0} if the list is {@code null} or empty
      */
     public static double getPassPercentage(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
@@ -165,7 +159,7 @@ public class Student {
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return the median marks as a double,
-     *             or 0.0 if the list is {@code null} or empty
+     *             or {@code 0.0} if the list is {@code null} or empty
      */
     public static double getMedianMarks(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
@@ -200,13 +194,15 @@ public class Student {
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return the summary report as a formatted string:
-     * <pre>{@code
+     * <pre>
+     * {@code
      * Class Summary (3 students): 
      * Average Marks: 67.69
      * Pass Percentage: 66.67
      * Passed: 2 | Failed: 1
      * Highest Scorer: Urahara
-     * Lowest Scorer: Ichigo}</pre>
+     * Lowest Scorer: Ichigo}
+     * </pre>
      * @return "No students in the class." if the list is {@code null} or empty
      */
     public static String getClassSummary(List<Student> students) {
@@ -214,7 +210,7 @@ public class Student {
 
         int total = students.size();
         int passed = countPassed(students);
-        double passPercentage = getPassPercentage(students);
+        double passPercentage = students.isEmpty() ? 0.0: (passed * 100.0) / students.size();
         double avg = getAvgMarks(students);
         Student highest = findHighestScorer(students);
         Student lowest = findLowestScorer(students);
@@ -282,11 +278,9 @@ public class Student {
     }
 
     /**
-     * Generates a list of students who failed from a list of students.
+     * Generates a list of students who failed from a list.
      * <p>
      * Failing criteria is: marks < 40.
-     * <p>
-     * Use {@link #setMarks(double)}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
@@ -306,15 +300,12 @@ public class Student {
     }
 
     /**
-     * Determines if student has passed or failed based on their marks.
+     * Returns whether the student has passed based on their marks.
      * <p>
-     * A student is considered to have passed if their marks are 40 or above, and failed if otherwise.
-     * <p>
-     * Uses {@link #setMarks(double)}.
+     * A student passes if there marks are {@code >= 40}.
      * </p>
      * 
-     * @param marks the marks of a student, must be between 0 and 100
-     * @return {@code true} if the student has passed, {@code false} if otherwise
+     * @return {@code true} if the student passed, {@code false} otherwise
      */
     public boolean isPassed() {
         if (marks >= 40) return true;
@@ -322,17 +313,18 @@ public class Student {
     }
 
     /**
-     * Determines the grade of a student based on their marks.
+     * Returns the grade of a student based on their marks.
      * <p>
      * The grading system is as follows:
-     * Marks >= 90: Grade A
-     * Marks >= 75 and < 90: Grade B
-     * Marks >= 60 and < 75: Grade C
-     * Marks >= 40 and < 60: Grade D
-     * Marks < 40: Grade F
+     * <ul>
+     *   <li>Marks {@code >= 90} -> Grade A </li>
+     *   <li>Marks {@code >= 75} and {@code < 90} -> Grade B</li>
+     *   <li>Marks {@code >= 60} and {@code < 75} -> Grade C</li>
+     *   <li>Marks {@code >= 40} and {@code < 60} -> Grade D</li>
+     *   <li>Marks {@code < 40} -> Grade F</li>
+     * </ul>
      * </p>
      * 
-     * @param marks the marks of a student, must be between 0 and 100
      * @return the grade of the student as a string.
      */
     public String getGrade() {
@@ -348,17 +340,17 @@ public class Student {
      * <p>
      * Average is the sum of all marks divided by the {@code students.size()} -> the no. of students.
      * </p>
+     * 
      * @param students the list of students to evaluate, may be {@code null}
-     * @param marks the marks of a student, must be between 0 and 100
      * @return the average marks of the students as a double,
-     *         or return 0.0 if the list is {@code null} or empty
+     *         or return {@code 0.0} if the list is {@code null} or empty
      */
     public static double getAvgMarks(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
         double sum = 0;
         for (Student s: students) {
-            sum += s.marks;
+            sum += s.getMarks();
         }
         return sum / students.size();
     }
@@ -372,7 +364,7 @@ public class Student {
      * The original list is not modified and an emtpy list {@code List<Student> result} is created.
      * This new list contains students which satisfy the following conditions:
      * <pre>
-     * {@code if (s.getGrade().length == 1 && Charachter.toUpperCase(s.getGrade().charAt(0)) == Charachter.toUpperCase(char grade))}
+     * {@code if (s.getGrade().length == 1 && Character.toUpperCase(s.getGrade().charAt(0)) == Character.toUpperCase(char grade))}
      * </pre>
      * </p>
      * 
@@ -403,10 +395,11 @@ public class Student {
      * <p>
      * In case of matching roll numbers, the first instance of the roll number is considered.
      * </p>
+     * 
      * @param students the list of students to search, may be {@code null}
      * @param roll the roll noumber to find, must be > 0
      * @return the matching student,
-     *             or null if the list of students is {@code null} or empty or the roll number is <= 0
+     *             or null if the list of students is {@code null} or empty or the roll number is {@code <= 0}
      */
     public static Student getStudentByRoll(List<Student> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return null;
@@ -462,7 +455,7 @@ public class Student {
     }
 
     /**
-     * Returns a new list of students containing the students sorted by marks in descending order (highest first).
+     * Returns a new list containing students sorted by marks in descending order (highest first).
      * <p>
      * Original list is not modified. The sorting is stable for students with equal marks.
      * </p>
@@ -484,6 +477,7 @@ public class Student {
      * <p>
      * Includes their roll number, name, marks, grade, and pass/fail status.
      * </p>
+     * 
      * @return a formatted string representing the student's details:
      * <pre>
      * {@code Roll: 2 | Name: Yoruichi | Marks: 89.37 | Grade: B | Status: Passed}
@@ -494,6 +488,18 @@ public class Student {
         return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");
     }
 
+    /**
+     * Entry point of the Student Grading Application.
+     * <p>
+     * Prompts the user to enter details for multiple students and validates the input ({@code Student(name, rollNumber, marks)}).
+     * <p>
+     * Creates and stores {@code Student} objects and displays each student's details using {@link #toString()}.
+     * <p>
+     * Calculates class average marks using {@link #getAvgMarks(List)} and summary using formatted string.
+     * </p>
+     *   
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Student> students = new ArrayList<>();

@@ -1,4 +1,4 @@
-// So fucking tired
+// First PR
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +11,10 @@ public class Student {
 
     /**
      * Represents a student having name, roll number and marks.
-     * <p>
-     * All {@code Student(String name, int rollNumber, double marks)} are stored in a list {@code students}.
-     * <p>
-     * Many methods to manage a {@code Student} are present in the class:
-     * - Getters:
-     * {@link #getName()}
-     * {@link #getRollNumber()}
-     * {@link #getMarks()}
-     * - Validators:
-     * {@link #getValidString(Scanner, String)}
-     * {@link #getValidInt(Scanner, String, int, int)}
-     * {@link #getValidDouble(Scanner, String, double, double)}
      * 
      * @param name the name of the student, should be {@code String}, should not be empty
      * @param rollNumber the roll number of the student, should be {@code int} and positive (>0)
-     * @param marks the marks of the students, should be {@code double} and between 0 and 100
+     * @param marks the marks of the student, should be {@code double} and between 0 and 100
      */
     public Student(String name, int rollNumber, double marks) {
         if (marks < 0 || marks > 100) {
@@ -68,7 +56,7 @@ public class Student {
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return the student with the highest marks,
-     *                     or {@code null} if the student is empty
+     *                     or {@code null} if the list is empty
      */
     public static Student findHighestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
@@ -90,7 +78,7 @@ public class Student {
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return the student with the lowest marks,
-     *                     or {@code null} if the student is empty
+     *                     or {@code null} if the list is empty
      */
     public static Student findLowestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
@@ -107,7 +95,7 @@ public class Student {
     /**
      * Counts the number of students who passed in the given list.
      * <p>
-     * Passing criteria is: marks >= 40.
+     * Marks >= 40
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
@@ -129,9 +117,7 @@ public class Student {
     /**
      * Calculate the pass percentage of students in the given list.
      * <p>
-     * Pass percentage is the percentage of students who have passed.
-     * <p>
-     * A student is considered to have passed if their marks are 40 or above.
+     * A student is considered to have passed: marks >= 40.
      * <p>
      * Uses {@link #countPassed(List)} for finding the number of students who have passed.
      * </p>
@@ -182,14 +168,16 @@ public class Student {
     /**
      * Generates a detailed summary report for a class of students.
      * <p>
-     * Includes the total number of students, average marks, pass percentage, number of passed and failed students, and the number of students in each grade category (A, B, C, D, F).
+     * Includes the total number of students, average marks, pass percentage, number of passed and failed students.
      * <p>
      * Used methods: 
-     * {@link #countPassed(List)}
-     * {@link #getPassPercentage(List)}
-     * {@link #getAvgMarks(List)}
-     * {@link #findHighestScorer(List)}
-     * {@link #findLowestScorer(List)}
+     * <ul>
+     *    <li>{@link #countPassed(List)}</li>
+     *    <li>{@link #getPassPercentage(List)}</li>
+     *    <li>{@link #getAvgMarks(List)}</li>
+     *    <li>{@link #findHighestScorer(List)}</li>
+     *    <li>{@link #findLowestScorer(List)}</li>
+     * </ul>
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
@@ -202,15 +190,14 @@ public class Student {
      * Passed: 2 | Failed: 1
      * Highest Scorer: Urahara
      * Lowest Scorer: Ichigo}
-     * </pre>
-     * @return "No students in the class." if the list is {@code null} or empty
+     * </pre>               OR "No students in the class." if the list is {@code null} or empty
      */
     public static String getClassSummary(List<Student> students) {
         if (students == null || students.isEmpty()) return "No students in the class.";
 
         int total = students.size();
         int passed = countPassed(students);
-        double passPercentage = students.isEmpty() ? 0.0: (passed * 100.0) / students.size();
+        double passPercentage = (passed * 100.0) / students.size();
         double avg = getAvgMarks(students);
         Student highest = findHighestScorer(students);
         Student lowest = findLowestScorer(students);
@@ -234,14 +221,15 @@ public class Student {
      * <p>
      * The original list is not modified and a new sorted list is created.
      * <p>
-     * A {@code limit(int)} is defined for a list having less than 3 students.
-     * If the no. students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
+     * If the number of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return a list of the top 3 students sorted by marks in decreasing order
-     * @return all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0
-     * @return an empty list if the list of students is {@code null} or empty
+     * <ul>
+     *    <li>OR all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0</li>
+     *    <li>OR an empty list if the list of students is {@code null} or empty </li>
+     * </ul>
      */
     public static List<Student> getTop3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -258,14 +246,15 @@ public class Student {
      * <p>
      * The original list is not modified and a new sorted list is created.
      * <p>
-     * A {@code limit(int)} is defined for a list having less than 3 students.
-     * If the no. of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
+     * If the number of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
      * @return a list of the bottom 3 students sorted by marks in the decreasing order 
-     * @return all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0
-     * @return an empty list if the list of students is {@code null} or empty
+     * <ul>
+     *    <li>all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0</li>
+     *    <li>an empty list if the list of students is {@code null} or empty</li>
+     * </ul>
      */
     public static List<Student> getBottom3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
@@ -302,14 +291,13 @@ public class Student {
     /**
      * Returns whether the student has passed based on their marks.
      * <p>
-     * A student passes if there marks are {@code >= 40}.
+     * A student passes if their marks are {@code >= 40}.
      * </p>
      * 
      * @return {@code true} if the student passed, {@code false} otherwise
      */
     public boolean isPassed() {
-        if (marks >= 40) return true;
-        return false;
+        return marks >= 40;
     }
 
     /**
@@ -338,7 +326,7 @@ public class Student {
     /**
      * Calculates the average marks from the marks of the list of students.
      * <p>
-     * Average is the sum of all marks divided by the {@code students.size()} -> the no. of students.
+     * Average is the sum of all marks divided by the {@code students.size()} -> the number of students.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
@@ -359,13 +347,9 @@ public class Student {
      * Returns a list of all students who received the given grade.
      * <p>
      * Grade matching is case-insensitive (e.g. 'A' is the same as 'a').
-     * A new {@code upperGrade(char)} is created for removing case-insensitivity.
      * <p>
-     * The original list is not modified and an emtpy list {@code List<Student> result} is created.
-     * This new list contains students which satisfy the following conditions:
-     * <pre>
-     * {@code if (s.getGrade().length == 1 && Character.toUpperCase(s.getGrade().charAt(0)) == Character.toUpperCase(char grade))}
-     * </pre>
+     * The original list is not modified and an empty list {@code List<Student> result} is created.
+     * This new list contains students which are of the given {@code char grade}.
      * </p>
      * 
      * @param students the list of students to search, may be {@code null}
@@ -397,7 +381,7 @@ public class Student {
      * </p>
      * 
      * @param students the list of students to search, may be {@code null}
-     * @param roll the roll noumber to find, must be > 0
+     * @param roll the roll number to find, must be > 0
      * @return the matching student,
      *             or null if the list of students is {@code null} or empty or the roll number is {@code <= 0}
      */
@@ -417,10 +401,7 @@ public class Student {
      * <p>
      * Original list is not modified. Creates a new list - {@code List<Student> sorted(students)} which is a copy of the original one.
      * <p>
-     * The new list is sorted in alphabetical order, while ignoring case sensitivity, using the following:
-     * <pre>
-     * {@code sorted.sort((a,b) -> a.getName().compareToIgnoreCase(b.getName()))}
-     * </pre>
+     * The new list is sorted in alphabetical order, while ignoring case sensitivity.
      * </p>
      * 
      * @param students list of students to modify, may be {@code null}
@@ -438,10 +419,7 @@ public class Student {
     /**
      * Removes the student with the given roll number from the list of students.
      * <p>
-     * Returns the modified list as:
-     * <pre> 
-     * {@code return students.removeIf(s -> s.getRollNumber() == roll)}
-     * </pre>
+     * Returns the modified list.
      * </p>
      * 
      * @param students list of students to modify, may be {@code null}
@@ -534,18 +512,18 @@ public class Student {
      * <p>
      * The value of the integer should be between the given {@code int min} and {@code int max}.
      * <p> 
-     * If {@code int val < int min || int val > int max}, another {@code Scanner sc} is returned.
-     * <p>
-     * If the input is not an integer, using {@code catch (Exception e)} another {@code Scanner sc} is returned.
+     * Repeatedly prompts until a valid integer within the specified range is entered.
      * </p>
      * 
      * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input into tokens
-     * @param prompt the addiitional {@code String} that is provided by the user along with the integer input
+     * @param prompt the additional {@code String} that is provided by the user along with the integer input
      * @param min the minimum value of the integer input (provided by the user)
      * @param max the maximum value of the integer input (provided by the user)
      * @return the integer input of {@code Scanner sc} ({@code int val}) if it is between {@code min} and {@code max}
-     * @return "Must be between {@code int min} and {@code int max}. Try again." and another {@code Scanner sc} if the input is an invalid integer
-     * @return "That's not a number, idiot. Try again." and another {@code Scanner sc} if the input is not an integer
+     * <ul>
+     *    <li>"Must be between {@code int min} and {@code int max}. Try again." and another {@code Scanner sc} if the input is an invalid integer</li>
+     *    <li>"Invalid input. Input must be a number" and another {@code Scanner sc} if the input is not an integer</li>
+     * </ul>
      */    
     private static int getValidInt(Scanner sc, String prompt, int min, int max) {
         while (true) {
@@ -560,7 +538,7 @@ public class Student {
                 return val;
             }
             catch (Exception e) {
-                System.out.println("That's not a number, idiot. Try again. \n");
+                System.out.println("Invalid input. Input must be number.\n");
                 sc.nextLine();
             }
         }
@@ -571,9 +549,7 @@ public class Student {
      * <p>
      * The value of the double should be between the given {@code double min} and {@code double max}.
      * <p>
-     * If {@code double val < double min || double val > double max} another {@code Scanner sc} is returned.
-     * <p>
-     * If the input is not a double, using {@code catch (Exception e)} another {@code Scanner sc} is returned.
+     * Repeatedly prompts until a valid double within the specified range is entered.
      * </p>
      * 
      * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input as tokens
@@ -581,8 +557,10 @@ public class Student {
      * @param min the minimum value of the double input (provided by the user)
      * @param max the maximum value of the double input (provided by the user)
      * @return the double input of {@code Scanner sc} ({@code double val}) if it is between {@code min} and {@code max}
-     * @return "Must be between {@code double min} and {@code double max}. Try again." and another {@code Scanner sc} if the input is an invalid double
-     * @return "That's not a number, idiot. Try again." and another {@code Scanner sc} if the input is not a double
+     * <ul>
+     *    <li>"Must be between {@code double min} and {@code double max}. Try again." and another {@code Scanner sc} if the input is an invalid double</li>
+     *    <li>"Invalid input. Input must be a number." and another {@code Scanner sc} if the input is not a double</li>
+     * </ul>
      */
     private static double getValidDouble(Scanner sc, String prompt, double min, double max) {
         while (true) {
@@ -597,7 +575,7 @@ public class Student {
                 return val;
             }
             catch (Exception e) {
-                System.out.println("That's not a number, idiot. Try again. \n");
+                System.out.println("Invalid input. Input must be a number.\n");
                 sc.nextLine();
             }
         }
@@ -606,22 +584,24 @@ public class Student {
     /**
      * Validates string input on scanner, and returns the scanner if invalid.
      * <p>
-     * The input of {@code Scanner sc} should not be empty and if it is, another {@code Scanner sc} is returned.
+     * The input of {@code Scanner sc} should not be empty.
      * <p>
-     * Uses the {@code sc.nextLine().trim()} to remove any leading or trailing spaces
+     * Repeatedly prompts until a valid string is entered.
      * </p>
      *  
      * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input as tokens
      * @param prompt the additional {@code String} that is provided by the user along with the string input
      * @return the string input of {@code Scanner sc} ({@code String input}) if the input is not empty
-     * @return "Don't leave it empty, dumbass." if {@code input.isEmpty()}
+     * <ul>
+     *    <li>"Input cannot be empty." if {@code input.isEmpty()}</li>
+     * </ul>
      */
     private static String getValidString(Scanner sc, String prompt) {
         while (true) {
             System.out.print(prompt + ": ");
             String input = sc.nextLine().trim();
             if (!input.isEmpty()) return input;
-            System.out.println("Don't leave it empty, dumbass.");
+            System.out.println("Input cannot be empty.");
         }
     }
 }

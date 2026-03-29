@@ -1,29 +1,40 @@
-// First PR
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
+/**
+ * A student in a grading system identifiable by name and roll number with an associated marks score between 0 and 100 (inclusive).
+ */
 public class Student {
     private String name;
     private int rollNumber;
     private double marks;
 
     /**
-     * Represents a student having name, roll number and marks.
+     * Constructs a new {@code Student} with the specified name, roll number and marks.
      * 
-     * @param name the name of the student, should be {@code String}, should not be empty
-     * @param rollNumber the roll number of the student, should be {@code int} and positive (>0)
-     * @param marks the marks of the student, should be {@code double} and between 0 and 100
+     * @param name the name of the student, should not be {@code null} or empty
+     * @param rollNumber the roll number of the student, positive (>0)
+     * @param marks the marks of the student, should be between 0 and 100
+     * @throws IllegalArgumentException if {@code name} is {@code null} or blank,
+     *                                     {@code marks} is outside [0,100],
+     *                                  or {@code rollNumber} is not positive
      */
     public Student(String name, int rollNumber, double marks) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty.");
+        }
         if (marks < 0 || marks > 100) {
             throw new IllegalArgumentException("Marks must be between 0 and 100.");
         }
-        this.name = name;
-        this.rollNumber = rollNumber;
-        this.marks = marks;
+        if (rollNumber <= 0) {
+            throw new IllegalArgumentException("Roll number cannot be zero or negative.");
         }
+        this.name = name;
+        this.marks = marks;
+        this.rollNumber = rollNumber;
+    }
 
     /** Returns the student's name. */
     public String getName() { return name; }
@@ -38,7 +49,7 @@ public class Student {
      * Marks are allowed only between 0 and 100.
      * </p>
      * 
-     * @param marks the new marks for the students
+     * @param marks the new marks for the {@code Student}
      * @throws IllegalArgumentException if marks are not between 0 and 100
      */
     public void setMarks(double marks) {
@@ -46,6 +57,38 @@ public class Student {
                 throw new IllegalArgumentException("Marks must be between 0 and 100.");
             }
             this.marks = marks;
+    }
+
+    /**
+     * Sets the name for the student and handles validation.
+     * <p>
+     * Name must not be empty.
+     * </p>
+     * 
+     * @param name the new name for the {@code Student} 
+     * @throws IllegalArgumentException if name is empty
+     */
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty.");
+        }
+        this.name = name;
+    }
+
+    /**
+     * Sets the roll number for the student and handles validation.
+     * <p>
+     * Roll number must be {@code > 0}.
+     * </p>
+     * 
+     * @param rollNumber the new roll number for the {@code Student}
+     * @throws IllegalArgumentException if roll {@code <= 0}
+     */
+    public void setRollNumber(int rollNumber) {
+        if (rollNumber <= 0) {
+            throw new IllegalArgumentException("Roll number cannot be zero or negative.");
+        }
+        this.rollNumber = rollNumber;
     }
     
     /**
@@ -57,7 +100,9 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the student with the highest marks,
      *                     or {@code null} if the list is empty
+     * @deprecated Use {@link Classroom#getHighestScorer()} instead
      */
+    @Deprecated
     public static Student findHighestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
         
@@ -79,7 +124,9 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the student with the lowest marks,
      *                     or {@code null} if the list is empty
+     * @deprecated Use {@link Classroom#getLowestScorer()} instead
      */
+    @Deprecated
     public static Student findLowestScorer(List<Student> students) {
         if (students == null || students.isEmpty()) return null;
 
@@ -101,7 +148,9 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the number of students who passed,
      *                    or {@code 0} if the list is {@code null} or empty
+     * @deprecated Use {@link Classroom#getNumberPassed()} instead
      */
+    @Deprecated
     public static int countPassed(List<Student> students) {
         if (students == null || students.isEmpty()) return 0;
 
@@ -125,7 +174,10 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the pass percentage as a double,
      *             or {@code 0.0} if the list is {@code null} or empty
+     * @deprecated Use {@link Classroom#getPassPercentage()} instead
      */
+    @SuppressWarnings("deprecation")                               // Since it calls a deprecated method internally
+    @Deprecated
     public static double getPassPercentage(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
@@ -191,7 +243,10 @@ public class Student {
      * Highest Scorer: Urahara
      * Lowest Scorer: Ichigo}
      * </pre>               OR "No students in the class." if the list is {@code null} or empty
+     * @deprecated Use {@link Classroom#getSummary()} instead
      */
+    @SuppressWarnings("deprecation")                             // Since it calls other deprecated methods internally
+    @Deprecated
     public static String getClassSummary(List<Student> students) {
         if (students == null || students.isEmpty()) return "No students in the class.";
 
@@ -230,7 +285,9 @@ public class Student {
      *    <li>OR all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0</li>
      *    <li>OR an empty list if the list of students is {@code null} or empty </li>
      * </ul>
+     * @deprecated Use {@link Classroom#getTop3Students()} instead
      */
+    @Deprecated
     public static List<Student> getTop3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -250,12 +307,14 @@ public class Student {
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
-     * @return a list of the bottom 3 students sorted by marks in the decreasing order 
+     * @return a list of the bottom 3 students sorted by marks in the ascending order 
      * <ul>
-     *    <li>all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0</li>
+     *    <li>all students sorted by marks in ascending order if {@code students.size()} is less than 3 and greater than 0</li>
      *    <li>an empty list if the list of students is {@code null} or empty</li>
      * </ul>
+     * @deprecated Use {@link Classroom#getBottom3Students()} instead
      */
+    @Deprecated
     public static List<Student> getBottom3Students(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -275,7 +334,9 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return a list of students who failed, 
      *           or an empty list if the list of students is {@code null}, empty or if no students fail
+     * @deprecated Use {@link Classroom#getFailedStudents()} instead
      */
+    @Deprecated
     public static List<Student> getFailedStudents(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -332,7 +393,9 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the average marks of the students as a double,
      *         or return {@code 0.0} if the list is {@code null} or empty
+     * @deprecated Use {@link Classroom#getAverageMarks()} instead
      */
+    @Deprecated
     public static double getAvgMarks(List<Student> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
@@ -353,21 +416,23 @@ public class Student {
      * </p>
      * 
      * @param students the list of students to search, may be {@code null}
-     * @param grade the grade to match (A, B, C, D, F).
+     * @param grade the grade to match (A, B, C, D, F)
      * @return list of matching students with the given grade,
      *                 or an empty list if the list of students is {@code null} or empty
+     * @deprecated Use {@link Classroom#getStudentsByGrade(char)} instead
      */
+    @Deprecated
     public static List<Student> getStudentsByGrade(List<Student> students, char grade) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        char upperGrade = Character.toUpperCase(grade); // Removes case-insensitivity.
+        char upperGrade = Character.toUpperCase(grade); // Adds case-insensitivity.
         if (upperGrade != 'A' && upperGrade != 'B' && upperGrade != 'C' && upperGrade != 'D' && upperGrade != 'F') {
             return new ArrayList<>(); 
         }
         List<Student> result = new ArrayList<>();
         for (Student s: students) {
             String gradeStr = s.getGrade();
-            if (gradeStr.length() == 1 && Character.toUpperCase(gradeStr.charAt(0)) == upperGrade) {
+            if (Character.toUpperCase(gradeStr.charAt(0)) == upperGrade) {
                 result.add(s);
             }
         }
@@ -384,7 +449,9 @@ public class Student {
      * @param roll the roll number to find, must be > 0
      * @return the matching student,
      *             or null if the list of students is {@code null} or empty or the roll number is {@code <= 0}
+     * @deprecated Use {@link Classroom#getStudentByRoll(int)} instead
      */
+    @Deprecated
     public static Student getStudentByRoll(List<Student> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return null;
 
@@ -407,7 +474,9 @@ public class Student {
      * @param students list of students to modify, may be {@code null}
      * @return sorted list by name (A-Z),
      *                or empty list if the list of students is {@code null} or empty
+     * @deprecated Use {@link Classroom#sortStudentsByName()} instead
      */
+    @Deprecated
     public static List<Student> sortStudentsByName(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
@@ -419,13 +488,15 @@ public class Student {
     /**
      * Removes the student with the given roll number from the list of students.
      * <p>
-     * Returns the modified list.
+     * roll number should be {@code > 0}.
      * </p>
      * 
      * @param students list of students to modify, may be {@code null}
-     * @param roll the roll number to remove, must be > 0
+     * @param roll the roll number to remove
      * @return {@code true} if a student was removed, {@code false} if no match or if the list of students is {@code null} or empty
+     * @deprecated Use {@link Classroom#removeStudentByRoll(int)} instead
      */
+    @Deprecated
     public static boolean removeStudentByRoll(List<Student> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return false;
 
@@ -441,7 +512,9 @@ public class Student {
      * @param students the list of students to sort, may be {@code null}
      * @return new sorted list by marks in descending order,
      *              or an empty list if input is {@code null} or empty
+     * @deprecated Use {@link Classroom#sortByMarksDescending()} instead
      */
+    @Deprecated
     public static List<Student> sortByMarksDescending(List<Student> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 

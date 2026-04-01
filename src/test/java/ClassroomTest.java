@@ -103,7 +103,7 @@ public class ClassroomTest {
     }
 
     @Test
-    void testGetFailedStudent() {
+    void testGetFailedStudents() {
         Classroom classroom = new Classroom("4B");
         classroom.addStudent(new Student("Denji", 1, 12.2));
         classroom.addStudent(new Student("Quanxi", 2, 67.3));
@@ -196,5 +196,16 @@ public class ClassroomTest {
         assertEquals("Sunless", classroom.sortByMarksDescending().get(1).getName());
         assertEquals("Cassia", classroom.sortByMarksDescending().get(2).getName());
         // Order among equal marks can be any.
+    }
+
+    @Test
+    void testRemoveStudentByRoll_NormalList() {
+        Classroom classroom = new Classroom("10A");
+        classroom.addStudent(new Student("Oshi", 1, 78.1));
+        classroom.addStudent(new Student("Rukia", 2, 34.1));
+        classroom.addStudent(new Student("Gon", 3, 86.1));
+
+        assertTrue(classroom.removeStudentByRoll(2));
+        assertTrue(classroom.removeStudentByRoll(3));
     }
 }

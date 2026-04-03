@@ -208,4 +208,16 @@ public class ClassroomTest {
         assertTrue(classroom.removeStudentByRoll(2));
         assertTrue(classroom.removeStudentByRoll(3));
     }
+    
+    @Test
+    void testGetHighestScorer_and_LowestScorer() {
+        Classroom classroom = new Classroom("6A");
+        classroom.addStudent(new Student("Hisoka", 1, 75.2));
+        classroom.addStudent(new Student("Caster", 2, 87.1));
+        classroom.addStudent(new Student("Gunlaug", 3, 76.1));
+        classroom.addStudent(new Student("Tessia", 4, 12.1));
+        
+        assertEquals("Caster", classroom.getHighestScorer().getName());
+        assertEquals("Tessia", classroom.getLowestScorer().getName());
+    }
 }

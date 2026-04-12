@@ -17,7 +17,7 @@ public class ClassroomTest {
     @Test
     void testGetSummary_EmptyClassroom() {
         Classroom classroom = new Classroom("EmptyClassroom");
-        assertEquals("No students in the class.", classroom.getSummary());
+        assertEquals("No students in the class.", classroom.getClassSummary());
     }
 
     @Test
@@ -28,7 +28,7 @@ public class ClassroomTest {
         classroom.addStudent(new Student("Kai", 3, 12.3));
         classroom.addStudent(new Student("Maneskin", 4, 32.2));
 
-        assertEquals("Solvane", classroom.getHighestScorer().getName());
+        assertEquals("Solvane", classroom.findHighestScorer().getName());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ClassroomTest {
         classroom.addStudent(new Student("Effie", 2, 35.1));
         classroom.addStudent(new Student("Cassia", 3, 92.3));
 
-        assertEquals((56 + 35.1 + 92.3) / 3, classroom.getAverageMarks());
+        assertEquals((56 + 35.1 + 92.3) / 3, classroom.getAvgMarks());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ClassroomTest {
         newStudents.add(new Student("Annabeth", 4, 97.2));
         classroom.addMultipleStudents(newStudents);
 
-        assertEquals("Annabeth", classroom.getHighestScorer().getName());
+        assertEquals("Annabeth", classroom.findHighestScorer().getName());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ClassroomTest {
         classroom.addStudent(new Student("Ron", 2, 42.2));
         classroom.addStudent(new Student("Hermoine", 3,93.2));
 
-        assertEquals("Ron", classroom.getLowestScorer().getName());
+        assertEquals("Ron", classroom.findLowestScorer().getName());
     }
 
     @Test
@@ -217,7 +217,7 @@ public class ClassroomTest {
         classroom.addStudent(new Student("Gunlaug", 3, 76.1));
         classroom.addStudent(new Student("Tessia", 4, 12.1));
         
-        assertEquals("Caster", classroom.getHighestScorer().getName());
-        assertEquals("Tessia", classroom.getLowestScorer().getName());
+        assertEquals("Caster", classroom.findHighestScorer().getName());
+        assertEquals("Tessia", classroom.findLowestScorer().getName());
     }
 }

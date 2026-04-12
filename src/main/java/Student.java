@@ -1,15 +1,17 @@
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * A student in a grading system identifiable by name and roll number with an associated marks score between 0 and 100 (inclusive).
+ * <br>
+ * Immutable and thread-safe.
  */
-public class Student {
-    private String name;
-    private int rollNumber;
-    private double marks;
+public final class Student implements Scorable {
+    private final String name;
+    private final int rollNumber;
+    private final double marks;
 
     /**
      * Constructs a new {@code Student} with the specified name, roll number and marks.
@@ -22,18 +24,9 @@ public class Student {
      *                                  or {@code rollNumber} is not positive
      */
     public Student(String name, int rollNumber, double marks) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
-        }
-        if (marks < 0 || marks > 100) {
-            throw new IllegalArgumentException("Marks must be between 0 and 100.");
-        }
-        if (rollNumber <= 0) {
-            throw new IllegalArgumentException("Roll number cannot be zero or negative.");
-        }
-        this.name = name;
-        this.marks = marks;
-        this.rollNumber = rollNumber;
+        this.name = validateName(name);
+        this.rollNumber = validateRoll(rollNumber);
+        this.marks = validateMarks(marks);
     }
 
     /** Returns the student's name. */
@@ -43,52 +36,91 @@ public class Student {
     /** Returns the student's marks. */
     public double getMarks() { return marks; }
     
-    /**
-     * Sets the marks for the student and handles validation. 
-     * <p> 
-     * Marks are allowed only between 0 and 100.
-     * </p>
-     * 
-     * @param marks the new marks for the {@code Student}
-     * @throws IllegalArgumentException if marks are not between 0 and 100
-     */
-    public void setMarks(double marks) {
-            if (marks < 0 || marks > 100) {
-                throw new IllegalArgumentException("Marks must be between 0 and 100.");
-            }
-            this.marks = marks;
-    }
-
-    /**
-     * Sets the name for the student and handles validation.
-     * <p>
-     * Name must not be empty.
-     * </p>
-     * 
-     * @param name the new name for the {@code Student} 
-     * @throws IllegalArgumentException if name is empty
-     */
-    public void setName(String name) {
+    private static String validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
+            throw new IllegalArgumentException("Name cannot be null or empty.");
         }
-        this.name = name;
+        return name;
     }
 
-    /**
-     * Sets the roll number for the student and handles validation.
-     * <p>
-     * Roll number must be {@code > 0}.
-     * </p>
-     * 
-     * @param rollNumber the new roll number for the {@code Student}
-     * @throws IllegalArgumentException if roll {@code <= 0}
-     */
-    public void setRollNumber(int rollNumber) {
+    private static int validateRoll(int rollNumber) {
         if (rollNumber <= 0) {
             throw new IllegalArgumentException("Roll number cannot be zero or negative.");
         }
-        this.rollNumber = rollNumber;
+        return rollNumber;
+    }
+
+    private static double validateMarks(double marks) {
+        if (marks < 0 || marks > 100) {
+            throw new IllegalArgumentException("Marks must be between 0 and 100.");
+        }
+        return marks;
+    }
+
+    /**
+     * Returns whether the student has passed based on their marks.
+     * <p>
+     * A student passes if their marks are {@code >= 40}.
+     * </p>
+     * 
+     * @return {@code true} if the student passed, {@code false} otherwise
+     */
+    @Override
+    public boolean isPassed() {
+        return marks >= 40;
+    }
+
+    /**
+     * Returns the grade of a student based on their marks.
+     * <p>
+     * The grading system is as follows:
+     * <ul>
+     *   <li>Marks {@code >= 90} -> Grade A </li>
+     *   <li>Marks {@code >= 75} and {@code < 90} -> Grade B</li>
+     *   <li>Marks {@code >= 60} and {@code < 75} -> Grade C</li>
+     *   <li>Marks {@code >= 40} and {@code < 60} -> Grade D</li>
+     *   <li>Marks {@code < 40} -> Grade F</li>
+     * </ul>
+     * </p>
+     * 
+     * @return the grade of the student as a string.
+     */
+    @Override
+    public String getGrade() {
+        if (marks >= 90) return "A";
+        if (marks >= 75) return "B";
+        if (marks >= 60) return "C";
+        if (marks >= 40) return "D";
+        return "F";
+    }
+
+    /**
+     * Returns a string representation of the student object.
+     * <p>
+     * Includes their roll number, name, marks, grade, and pass/fail status.
+     * </p>
+     * 
+     * @return a formatted string representing the student's details:
+     * <pre>
+     * {@code Roll: 2 | Name: Yoruichi | Marks: 89.37 | Grade: B | Status: Passed}
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student other = (Student) o;
+        return rollNumber == other.rollNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rollNumber);
     }
     
     /**
@@ -103,11 +135,11 @@ public class Student {
      * @deprecated Use {@link Classroom#getHighestScorer()} instead
      */
     @Deprecated
-    public static Student findHighestScorer(List<Student> students) {
+    public static <T extends Scorable> T findHighestScorer(List<? extends T> students) {
         if (students == null || students.isEmpty()) return null;
         
-        Student highest = students.get(0);
-        for (Student s: students) {
+        T highest = students.get(0);
+        for (T s: students) {
             if (s.getMarks() > highest.getMarks()) {
                 highest = s;
             }
@@ -127,11 +159,11 @@ public class Student {
      * @deprecated Use {@link Classroom#getLowestScorer()} instead
      */
     @Deprecated
-    public static Student findLowestScorer(List<Student> students) {
+    public static <T extends Scorable> T findLowestScorer(List<? extends T> students) {
         if (students == null || students.isEmpty()) return null;
 
-        Student lowest = students.get(0);
-        for (Student s: students) {
+        T lowest = students.get(0);
+        for (T s: students) {
             if (s.getMarks() < lowest.getMarks()) {
                 lowest = s;
             }
@@ -148,14 +180,14 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the number of students who passed,
      *                    or {@code 0} if the list is {@code null} or empty
-     * @deprecated Use {@link Classroom#getNumberPassed()} instead
+     * @deprecated Use {@link Classroom#countPassed()} instead
      */
     @Deprecated
-    public static int countPassed(List<Student> students) {
+    public static <T extends Scorable> int countPassed(List<? extends T> students) {
         if (students == null || students.isEmpty()) return 0;
 
         int count = 0;
-        for (Student s: students) {
+        for (T s: students) {
             if (s.isPassed()) {
                 count++;
             }
@@ -178,7 +210,7 @@ public class Student {
      */
     @SuppressWarnings("deprecation")                               // Since it calls a deprecated method internally
     @Deprecated
-    public static double getPassPercentage(List<Student> students) {
+    public static <T extends Scorable> double getPassPercentage(List<? extends T> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
         int passed = countPassed(students);
@@ -198,12 +230,14 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the median marks as a double,
      *             or {@code 0.0} if the list is {@code null} or empty
+     * @deprecated Use {@link Classroom#getMedianMarks()} instead
      */
-    public static double getMedianMarks(List<Student> students) {
+    @Deprecated
+    public static <T extends Scorable> double getMedianMarks(List<? extends T> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
         List<Double> marksList = new ArrayList<>();
-        for (Student s: students) {
+        for (T s: students) {
             marksList.add(s.getMarks());
         }
         Collections.sort(marksList);
@@ -243,19 +277,19 @@ public class Student {
      * Highest Scorer: Urahara
      * Lowest Scorer: Ichigo}
      * </pre>               OR "No students in the class." if the list is {@code null} or empty
-     * @deprecated Use {@link Classroom#getSummary()} instead
+     * @deprecated Use {@link Classroom#getClassSummary()} instead
      */
     @SuppressWarnings("deprecation")                             // Since it calls other deprecated methods internally
     @Deprecated
-    public static String getClassSummary(List<Student> students) {
+    public static <T extends Scorable> String getClassSummary(List<? extends T> students) {
         if (students == null || students.isEmpty()) return "No students in the class.";
 
         int total = students.size();
         int passed = countPassed(students);
         double passPercentage = (passed * 100.0) / students.size();
         double avg = getAvgMarks(students);
-        Student highest = findHighestScorer(students);
-        Student lowest = findLowestScorer(students);
+        T highest = findHighestScorer(students);
+        T lowest = findLowestScorer(students);
 
         String highestName = (highest != null) ? highest.getName() : "N/A";
         String lowestName = (lowest != null) ? lowest.getName() : "N/A";
@@ -276,7 +310,7 @@ public class Student {
      * <p>
      * The original list is not modified and a new sorted list is created.
      * <p>
-     * If the number of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a {@code sublist}.
+     * If the number of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a view in a new {@code ArrayList}.
      * </p>
      * 
      * @param students the list of students to evaluate, may be {@code null}
@@ -288,14 +322,14 @@ public class Student {
      * @deprecated Use {@link Classroom#getTop3Students()} instead
      */
     @Deprecated
-    public static List<Student> getTop3Students(List<Student> students) {
+    public static <T extends Scorable> List<T> getTop3Students(List<? extends T> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        List<Student> sorted = new ArrayList<>(students);
+        List<T> sorted = new ArrayList<>(students);
         sorted.sort((a, b) -> Double.compare(b.getMarks(), a.getMarks()));
 
         int limit = Math.min(3, sorted.size());
-        return sorted.subList(0, limit);
+        return new ArrayList<>(sorted.subList(0, limit));
     }
 
     /**
@@ -315,10 +349,10 @@ public class Student {
      * @deprecated Use {@link Classroom#getBottom3Students()} instead
      */
     @Deprecated
-    public static List<Student> getBottom3Students(List<Student> students) {
+    public static <T extends Scorable> List<T> getBottom3Students(List<? extends T> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        List<Student> sorted = new ArrayList<>(students);
+        List<T> sorted = new ArrayList<>(students);
         sorted.sort((a, b) -> Double.compare(a.getMarks(), b.getMarks()));
 
         int limit = Math.min(3, sorted.size());
@@ -337,51 +371,16 @@ public class Student {
      * @deprecated Use {@link Classroom#getFailedStudents()} instead
      */
     @Deprecated
-    public static List<Student> getFailedStudents(List<Student> students) {
+    public static <T extends Scorable> List<T> getFailedStudents(List<? extends T> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        List<Student> failed = new ArrayList<>();
-        for (Student s: students) {
+        List<T> failed = new ArrayList<>();
+        for (T s: students) {
             if (!s.isPassed()) {
                 failed.add(s);
             }
         }
         return failed;
-    }
-
-    /**
-     * Returns whether the student has passed based on their marks.
-     * <p>
-     * A student passes if their marks are {@code >= 40}.
-     * </p>
-     * 
-     * @return {@code true} if the student passed, {@code false} otherwise
-     */
-    public boolean isPassed() {
-        return marks >= 40;
-    }
-
-    /**
-     * Returns the grade of a student based on their marks.
-     * <p>
-     * The grading system is as follows:
-     * <ul>
-     *   <li>Marks {@code >= 90} -> Grade A </li>
-     *   <li>Marks {@code >= 75} and {@code < 90} -> Grade B</li>
-     *   <li>Marks {@code >= 60} and {@code < 75} -> Grade C</li>
-     *   <li>Marks {@code >= 40} and {@code < 60} -> Grade D</li>
-     *   <li>Marks {@code < 40} -> Grade F</li>
-     * </ul>
-     * </p>
-     * 
-     * @return the grade of the student as a string.
-     */
-    public String getGrade() {
-        if (marks >= 90) return "A";
-        if (marks >= 75) return "B";
-        if (marks >= 60) return "C";
-        if (marks >= 40) return "D";
-        return "F";
     }
 
     /**
@@ -393,14 +392,14 @@ public class Student {
      * @param students the list of students to evaluate, may be {@code null}
      * @return the average marks of the students as a double,
      *         or return {@code 0.0} if the list is {@code null} or empty
-     * @deprecated Use {@link Classroom#getAverageMarks()} instead
+     * @deprecated Use {@link Classroom#getAvgMarks()} instead
      */
     @Deprecated
-    public static double getAvgMarks(List<Student> students) {
+    public static <T extends Scorable> double getAvgMarks(List<? extends T> students) {
         if (students == null || students.isEmpty()) return 0.0;
 
         double sum = 0;
-        for (Student s: students) {
+        for (T s: students) {
             sum += s.getMarks();
         }
         return sum / students.size();
@@ -422,15 +421,15 @@ public class Student {
      * @deprecated Use {@link Classroom#getStudentsByGrade(char)} instead
      */
     @Deprecated
-    public static List<Student> getStudentsByGrade(List<Student> students, char grade) {
+    public static <T extends Scorable> List<T> getStudentsByGrade(List<? extends T> students, char grade) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
         char upperGrade = Character.toUpperCase(grade); // Adds case-insensitivity.
         if (upperGrade != 'A' && upperGrade != 'B' && upperGrade != 'C' && upperGrade != 'D' && upperGrade != 'F') {
             return new ArrayList<>(); 
         }
-        List<Student> result = new ArrayList<>();
-        for (Student s: students) {
+        List<T> result = new ArrayList<>();
+        for (T s: students) {
             String gradeStr = s.getGrade();
             if (Character.toUpperCase(gradeStr.charAt(0)) == upperGrade) {
                 result.add(s);
@@ -452,10 +451,10 @@ public class Student {
      * @deprecated Use {@link Classroom#getStudentByRoll(int)} instead
      */
     @Deprecated
-    public static Student getStudentByRoll(List<Student> students, int roll) {
+    public static <T extends Scorable> T getStudentByRoll(List<? extends T> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return null;
 
-        for (Student s: students) {
+        for (T s: students) {
             if (s.getRollNumber() == roll) {
                 return s;
             }
@@ -477,10 +476,10 @@ public class Student {
      * @deprecated Use {@link Classroom#sortStudentsByName()} instead
      */
     @Deprecated
-    public static List<Student> sortStudentsByName(List<Student> students) {
+    public static <T extends Scorable> List<T> sortStudentsByName(List<? extends T> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        List<Student> sorted = new ArrayList<>(students);
+        List<T> sorted = new ArrayList<>(students);
         sorted.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
         return sorted;
     }
@@ -497,7 +496,7 @@ public class Student {
      * @deprecated Use {@link Classroom#removeStudentByRoll(int)} instead
      */
     @Deprecated
-    public static boolean removeStudentByRoll(List<Student> students, int roll) {
+    public static <T extends Scorable> boolean removeStudentByRoll(List<? extends T> students, int roll) {
         if (students == null || students.isEmpty() || roll <= 0) return false;
 
         return students.removeIf(s -> s.getRollNumber() == roll);
@@ -515,166 +514,11 @@ public class Student {
      * @deprecated Use {@link Classroom#sortByMarksDescending()} instead
      */
     @Deprecated
-    public static List<Student> sortByMarksDescending(List<Student> students) {
+    public static <T extends Scorable> List<T> sortByMarksDescending(List<? extends T> students) {
         if (students == null || students.isEmpty()) return new ArrayList<>();
 
-        List<Student> sorted = new ArrayList<>(students);
+        List<T> sorted = new ArrayList<>(students);
         sorted.sort((a, b) -> Double.compare(b.getMarks(), a.getMarks()));
         return sorted;
-    }
-
-    /**
-     * Returns a string representation of the student object.
-     * <p>
-     * Includes their roll number, name, marks, grade, and pass/fail status.
-     * </p>
-     * 
-     * @return a formatted string representing the student's details:
-     * <pre>
-     * {@code Roll: 2 | Name: Yoruichi | Marks: 89.37 | Grade: B | Status: Passed}
-     * </pre>
-     */
-    @Override
-    public String toString() {
-        return String.format("Roll: %d | Name: %s | Marks: %.2f | Grade: %s | Status: %s", rollNumber, name, marks, getGrade(),  isPassed() ? "Passed" : "Failed");
-    }
-
-    /**
-     * Entry point of the Student Grading Application.
-     * <p>
-     * Prompts the user to enter details for multiple students and validates the input ({@code Student(name, rollNumber, marks)}).
-     * <p>
-     * Creates and stores {@code Student} objects and displays each student's details using {@link #toString()}.
-     * <p>
-     * Calculates class average marks using {@link #getAvgMarks(List)} and summary using formatted string.
-     * </p>
-     *   
-     * @param args command-line arguments (not used)
-     */
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        List<Student> students = new ArrayList<>();
-
-        System.out.println("How many students? ");
-        int num = getValidInt(scanner, "Number of students", 1, 10);
-
-        for (int i = 0; i < num; i++) {
-            System.out.println("\n --- Student " + (i + 1) + " ---");
-
-            String name = getValidString(scanner, "Name");
-            int rollNumber = getValidInt(scanner, "Roll no.", 1, 40);
-            double marks = getValidDouble(scanner, "Marks", 1, 100);
-
-            Student s = new Student(name, rollNumber, marks);
-            students.add(s);
-
-            System.out.println("\n" + s);
-        }
-        System.out.println("\n=== SUMMARY ===");
-        for (int i = 0; i < students.size(); i++) {
-            Student s = students.get(i);
-            System.out.printf("Student %d: %s%n", (i + 1), s);
-        }
-        double avgMarks = getAvgMarks(students);
-        System.out.println("\n Average marks of the class: " + avgMarks);
-        scanner.close();
-    }
-
-    /**
-     * Validates integer input on scanner and returns the scanner if invalid.
-     * <p>
-     * The value of the integer should be between the given {@code int min} and {@code int max}.
-     * <p> 
-     * Repeatedly prompts until a valid integer within the specified range is entered.
-     * </p>
-     * 
-     * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input into tokens
-     * @param prompt the additional {@code String} that is provided by the user along with the integer input
-     * @param min the minimum value of the integer input (provided by the user)
-     * @param max the maximum value of the integer input (provided by the user)
-     * @return the integer input of {@code Scanner sc} ({@code int val}) if it is between {@code min} and {@code max}
-     * <ul>
-     *    <li>"Must be between {@code int min} and {@code int max}. Try again." and another {@code Scanner sc} if the input is an invalid integer</li>
-     *    <li>"Invalid input. Input must be a number" and another {@code Scanner sc} if the input is not an integer</li>
-     * </ul>
-     */    
-    private static int getValidInt(Scanner sc, String prompt, int min, int max) {
-        while (true) {
-            try {
-                System.out.print(prompt + ": ");
-                int val = sc.nextInt();
-                sc.nextLine();
-                if (val < min || val > max) {
-                    System.out.printf("Must be between %d and %d. Try again. \n", min, max);
-                    continue;
-                }
-                return val;
-            }
-            catch (Exception e) {
-                System.out.println("Invalid input. Input must be number.\n");
-                sc.nextLine();
-            }
-        }
-    }
-   
-    /**
-     * Validates double (decimal) input on scanner, and returns the scanner if invalid.
-     * <p>
-     * The value of the double should be between the given {@code double min} and {@code double max}.
-     * <p>
-     * Repeatedly prompts until a valid double within the specified range is entered.
-     * </p>
-     * 
-     * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input as tokens
-     * @param prompt the additional {@code String} that is provided by the user along with the double input
-     * @param min the minimum value of the double input (provided by the user)
-     * @param max the maximum value of the double input (provided by the user)
-     * @return the double input of {@code Scanner sc} ({@code double val}) if it is between {@code min} and {@code max}
-     * <ul>
-     *    <li>"Must be between {@code double min} and {@code double max}. Try again." and another {@code Scanner sc} if the input is an invalid double</li>
-     *    <li>"Invalid input. Input must be a number." and another {@code Scanner sc} if the input is not a double</li>
-     * </ul>
-     */
-    private static double getValidDouble(Scanner sc, String prompt, double min, double max) {
-        while (true) {
-            try {
-                System.out.print(prompt + ": ");
-                double val = sc.nextDouble();
-                sc.nextLine();
-                if (val < min || val > max) {
-                    System.out.printf("Must be between %.1f and %.1f. Try again. \n", min, max);
-                    continue;
-                }
-                return val;
-            }
-            catch (Exception e) {
-                System.out.println("Invalid input. Input must be a number.\n");
-                sc.nextLine();
-            }
-        }
-    }
-   
-    /**
-     * Validates string input on scanner, and returns the scanner if invalid.
-     * <p>
-     * The input of {@code Scanner sc} should not be empty.
-     * <p>
-     * Repeatedly prompts until a valid string is entered.
-     * </p>
-     *  
-     * @param sc the text {@code Scanner sc} which parses primitive types and breaks its input as tokens
-     * @param prompt the additional {@code String} that is provided by the user along with the string input
-     * @return the string input of {@code Scanner sc} ({@code String input}) if the input is not empty
-     * <ul>
-     *    <li>"Input cannot be empty." if {@code input.isEmpty()}</li>
-     * </ul>
-     */
-    private static String getValidString(Scanner sc, String prompt) {
-        while (true) {
-            System.out.print(prompt + ": ");
-            String input = sc.nextLine().trim();
-            if (!input.isEmpty()) return input;
-            System.out.println("Input cannot be empty.");
-        }
     }
 }

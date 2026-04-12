@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * A classroom identifiable by its name and containing a list of students.
@@ -7,9 +8,9 @@ import java.util.List;
  * Provides methods to manage students and compute class statistics. 
  * </p>
  */
-public class Classroom {
-    private List<Student> students;
-    private String className;
+public final class Classroom {
+    private final List<Student> students;
+    private final String className;
 
     /**
      * Constructs a new {@code Classroom} with specified name.
@@ -17,8 +18,15 @@ public class Classroom {
      * @param className the name of the {@code Classroom} 
      */
     public Classroom(String className) {
-        this.className = className;
+        this.className = validateString(className);
         this.students = new ArrayList<>();  //Always initialized: never null
+    }
+
+    private static String validateString(String className) {
+        if (className == null || className.trim().isEmpty()) {
+            throw new IllegalArgumentException("Class name cannot be empty.");
+        }
+        return className;
     }
 
     /** Returns the name of the {@code Classroom}. */
@@ -26,22 +34,6 @@ public class Classroom {
     /** Returns the list of students contained in the {@code Classroom}. */
     public List<Student> getStudents() {
         return new ArrayList<>(students);
-    }
-
-    /**
-     * Sets the name of the classroom and handles validation.
-     * <p>
-     * Class name must not be empty.
-     * </p>
-     * 
-     * @param className new name of the {@code Classroom}
-     * @throws IllegalArgumentException if class name is empty
-     */
-    public void setClassName(String className) {
-        if (className == null || className.trim().isEmpty()) {
-            throw new IllegalArgumentException("Class name cannot be empty.");
-        }
-        this.className = className;
     }
 
     /**
@@ -61,90 +53,139 @@ public class Classroom {
     }
 
     /**
-     * Calculates the average marks of a classroom.
+     * Finds the student with highest marks from a classroom.
      * <p>
-     * Average is the sum of all marks divided by {@code Classroom.size()}.
+     * Handles empty list by returning {@code null}.
      * </p>
      * 
-     * @return the average marks as a double,
-     *         or return {@code 0.0} if the list is empty
+     * @param students the list of students to evaluate
+     * @return the student with the highest marks,
+     *                     or {@code null} if the list is empty
      */
-    public double getAverageMarks() {
-        return Student.getAvgMarks(students);
+    public Student findHighestScorer() {
+        if (students.isEmpty()) return null;
+        
+        Student highest = students.get(0);
+        for (Student s: students) {
+            if (s.getMarks() > highest.getMarks()) {
+                highest = s;
+            }
+        }
+        return highest;
     }
 
     /**
-     * Calculates the pass percentage of a classroom.
+     * Finds the student with lowest marks from a classroom.
      * <p>
-     * A student passes if their marks {@code >= 40}.
+     * Handles empty list by returning {@code null}.
      * </p>
      * 
+     * @param students the list of students to evaluate
+     * @return the student with the lowest marks,
+     *                     or {@code null} if the list is empty
+     */
+    public Student findLowestScorer() {
+        if (students.isEmpty()) return null;
+
+        Student lowest = students.get(0);
+        for (Student s: students) {
+            if (s.getMarks() < lowest.getMarks()) {
+                lowest = s;
+            }
+        }
+        return lowest;
+    } 
+
+    /**
+     * Counts the number of students who passed in a classroom.
+     * <p>
+     * Marks >= 40
+     * </p>
+     * 
+     * @param students the list of students to evaluate
+     * @return the number of students who passed,
+     *                    or {@code 0} if the list is empty
+     */
+    public int countPassed() {
+        if (students.isEmpty()) return 0;
+
+        int count = 0;
+        for (Student s: students) {
+            if (s.isPassed()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Calculate the pass percentage of students in a classroom.
+     * <p>
+     * A student is considered to have passed: marks >= 40.
+     * <p>
+     * Uses {@link #countPassed(List)} for finding the number of students who have passed.
+     * </p>
+     * 
+     * @param students the list of students to evaluate
      * @return the pass percentage as a double,
      *             or {@code 0.0} if the list is empty
      */
     public double getPassPercentage() {
-        return Student.getPassPercentage(students);
+        if (students.isEmpty()) return 0.0;
+
+        int passed = countPassed();
+        return (passed * 100.0) / students.size();
     }
 
     /**
-     * Finds the number of students who passed in a classroom.
+     * Calculates the median marks from a classroom. 
      * <p>
-     * Passing criteria: marks {@code >= 40}.
+     * The original list is not modified and a new sorted list is created.
+     * The median is the middle value of this modified list.
+     * <p>
+     * If there are even number of students, median is the average of the middle two values.
+     * If there are odd number of students, the median is middle value.
      * </p>
      * 
-     * @return the number of students who passed,
-     *                    or {@code 0} if the list is empty
+     * @param students the list of students to evaluate
+     * @return the median marks as a double,
+     *             or {@code 0.0} if the list is empty
      */
-    public int getNumberPassed() {
-        return Student.countPassed(students);
+    public double getMedianMarks() {
+        if (students.isEmpty()) return 0.0;
+
+        List<Double> marksList = new ArrayList<>();
+        for (Student s: students) {
+            marksList.add(s.getMarks());
+        }
+        Collections.sort(marksList);
+        int n = marksList.size();
+        if (n % 2 == 1) {
+            return marksList.get( n / 2);
+        } else {
+            double mid1 = marksList.get(n / 2 - 1);
+            double mid2 = marksList.get(n / 2);
+            return (mid1 + mid2) / 2.0;
+        }
     }
 
     /**
-     * Finds the students with the highest marks from a classroom.
-     * <p>
-     * Handles empty list by returning null.
-     * </p>
-     * 
-     * @return the student with the highest marks,
-     *                     or {@code null} if the list is empty
-     */
-    public Student getHighestScorer() {
-        return Student.findHighestScorer(students);
-    }
-
-    /**
-     * Finds student with lowest marks from a classroom.
-     * <p>
-     * Handles empty list by returning null.
-     * </p>
-     * 
-     * @return the student with the lowest marks,
-     *                     or {@code null} if the list is empty
-     */
-    public Student getLowestScorer() {
-        return Student.findLowestScorer(students);
-    }
-
-    /**
-     * Generates a list of students who failed in the classroom.
-     * <p>
-     * Failing criteria: marks < 40.
-     * </p>
-     * 
-     * @return a list of students who failed, 
-     *           or an empty list if the list of students is empty or if no students fail
-     */
-    public List<Student> getFailedStudents() {
-        return Student.getFailedStudents(students);
-    }
-
-    /**
-     * Generates a detailed summary report for a classroom.
+     * Generates a detailed summary report for a class of students.
      * <p>
      * Includes the total number of students, average marks, pass percentage, number of passed and failed students.
+     * <p>
+     * Used methods: 
+     * <ul>
+     *    <li>{@link #countPassed(List)}</li>
+     *    <li>{@link #getPassPercentage(List)}</li>
+     *    <li>{@link #getAvgMarks(List)}</li>
+     *    <li>{@link #findHighestScorer(List)}</li>
+     *    <li>{@link #findLowestScorer(List)}</li>
+     * </ul>
      * </p>
      * 
-     * @return the summary as a formatted string:
+     * @param students the list of students to evaluate
+     * @return the summary report as a formatted string:
      * <pre>
      * {@code
      * Class Summary (3 students): 
@@ -155,30 +196,39 @@ public class Classroom {
      * Lowest Scorer: Ichigo}
      * </pre>               OR "No students in the class." if the list is empty
      */
-    public String getSummary() {
-        return Student.getClassSummary(students);
-    }
+    public String getClassSummary() {
+        if (students.isEmpty()) return "No students in the class.";
 
-    /**
-     * Calculates the median marks for a classroom.
-     * <p>
-     * If there are even number of students, median is the average of the middle two values.
-     * <br>If there are odd number of students, the median is middle value.
-     * </p>
-     * 
-     * @return the median marks as a double,
-     *             or {@code 0.0} if the list is empty
-     */
-    public double getMedianMarks() {
-        return Student.getMedianMarks(students);
+        int total = students.size();
+        int passed = countPassed();
+        double passPercentage = getPassPercentage();
+        double avg = getAvgMarks();
+        Student highest = findHighestScorer();
+        Student lowest = findLowestScorer();
+
+        String highestName = (highest != null) ? highest.getName() : "N/A";
+        String lowestName = (lowest != null) ? lowest.getName() : "N/A";
+
+        return String.format(
+            "Class Summary (%d students): %n" +
+            "Average Marks: %.2f%n" +
+            "Pass Percentage: %.2f%%%n" +
+            "Passed: %d | Failed: %d%n" +
+            "Highest Scorer: %s%n" +
+            "Lowest Scorer: %s",
+            total, avg, passPercentage, passed, (total - passed), highestName, lowestName
+        );
     }
-    
+ 
     /**
-     * Finds 3 students with the highest marks in a classroom.
+     * Finds 3 students with the highest marks from a classroom.
      * <p>
-     * If the number of students is less than 3 and greater than 0, returns those many students in a list, hence creating a {@code sublist}.
+     * The original list is not modified and a new sorted list is created.
+     * <p>
+     * If the number of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a view in a new {@code ArrayList}.
      * </p>
      * 
+     * @param students the list of students to evaluate
      * @return a list of the top 3 students sorted by marks in decreasing order
      * <ul>
      *    <li>OR all students sorted by marks in decreasing order if {@code students.size()} is less than 3 and greater than 0</li>
@@ -186,15 +236,24 @@ public class Classroom {
      * </ul>
      */
     public List<Student> getTop3Students() {
-        return Student.getTop3Students(students);
+        if (students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> Double.compare(b.getMarks(), a.getMarks()));
+
+        int limit = Math.min(3, sorted.size());
+        return new ArrayList<>(sorted.subList(0, limit));
     }
 
     /**
-     * Finds 3 students with the lowest marks in a classroom.
+     * Finds 3 students with the lowest marks from a classroom.
      * <p>
-     * If the number of students is less than 3 and greater than 0, returns those many students in a list, hence creating a {@code sublist}.
+     * The original list is not modified and a new sorted list is created.
+     * <p>
+     * If the number of students is less than 3 and greater than 0, the method returns those many students in a list, hence creating a view in a new {@code ArrayList}.
      * </p>
      * 
+     * @param students the list of students to evaluate
      * @return a list of the bottom 3 students sorted by marks in the ascending order 
      * <ul>
      *    <li>all students sorted by marks in ascending order if {@code students.size()} is less than 3 and greater than 0</li>
@@ -202,21 +261,86 @@ public class Classroom {
      * </ul>
      */
     public List<Student> getBottom3Students() {
-        return Student.getBottom3Students(students);
+        if (students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> Double.compare(a.getMarks(), b.getMarks()));
+
+        int limit = Math.min(3, sorted.size());
+        return new ArrayList<>(sorted.subList(0, limit));
+    }
+
+    /**
+     * Generates a list of students who failed from a classroom.
+     * <p>
+     * Failing criteria is: marks < 40.
+     * </p>
+     * 
+     * @param students the list of students to evaluate
+     * @return a list of students who failed, 
+     *           or an empty list if the list of students is empty or if no students fail
+     */
+    public List<Student> getFailedStudents() {
+        if (students.isEmpty()) return new ArrayList<>();
+
+        List<Student> failed = new ArrayList<>();
+        for (Student s: students) {
+            if (!s.isPassed()) {
+                failed.add(s);
+            }
+        }
+        return failed;
+    }
+
+    /**
+     * Calculates the average marks from the marks of students of a classroom.
+     * <p>
+     * Average is the sum of all marks divided by the {@code students.size()} -> the number of students.
+     * </p>
+     * 
+     * @param students the list of students to evaluate
+     * @return the average marks of the students as a double,
+     *         or return {@code 0.0} if the list is empty
+     */
+    public double getAvgMarks() {
+        if (students.isEmpty()) return 0.0;
+
+        double sum = 0;
+        for (Student s: students) {
+            sum += s.getMarks();
+        }
+        return sum / students.size();
     }
 
     /**
      * Returns a list of all students who received the given grade.
      * <p>
-     * Grade matching is case-insensitive.
+     * Grade matching is case-insensitive (e.g. 'A' is the same as 'a').
+     * <p>
+     * The original list is not modified and an empty list is created.
+     * This new list contains students which are of the given {@code char grade}.
      * </p>
      * 
+     * @param students the list of students to search
      * @param grade the grade to match (A, B, C, D, F)
      * @return list of matching students with the given grade,
      *                 or an empty list if the list of students is empty
      */
     public List<Student> getStudentsByGrade(char grade) {
-        return Student.getStudentsByGrade(students, grade);
+        if (students.isEmpty()) return new ArrayList<>();
+
+        char upperGrade = Character.toUpperCase(grade); // Adds case-insensitivity.
+        if (upperGrade != 'A' && upperGrade != 'B' && upperGrade != 'C' && upperGrade != 'D' && upperGrade != 'F') {
+            return new ArrayList<>(); 
+        }
+        List<Student> result = new ArrayList<>();
+        for (Student s: students) {
+            String gradeStr = s.getGrade();
+            if (Character.toUpperCase(gradeStr.charAt(0)) == upperGrade) {
+                result.add(s);
+            }
+        }
+        return result;
     }
 
     /**
@@ -225,51 +349,74 @@ public class Classroom {
      * In case of matching roll numbers, the first instance of the roll number is considered.
      * </p>
      * 
-     * @param roll the roll number to find ({@code > 0})
+     * @param students the list of students to search
+     * @param roll the roll number to find, must be > 0
      * @return the matching student,
      *             or null if the list of students is empty or the roll number is {@code <= 0}
      */
     public Student getStudentByRoll(int roll) {
-        return Student.getStudentByRoll(students, roll);
+        if (students.isEmpty() || roll <= 0) return null;
+
+        for (Student s: students) {
+            if (s.getRollNumber() == roll) {
+                return s;
+            }
+        }
+        return null;
     }
 
     /**
-     * Returns a new list of students alphabetically by name.
+     * Returns a new list of students sorted alphabetically by name.
      * <p>
-     * Sorting is case-insensitive.
+     * Original list is not modified. Creates a new list - {@code List<Student> sorted(students)} which is a copy of the original one.
+     * <p>
+     * The new list is sorted in alphabetical order, while ignoring case sensitivity.
      * </p>
      * 
+     * @param students list of students to modify
      * @return sorted list by name (A-Z),
      *                or empty list if the list of students is empty
      */
     public List<Student> sortStudentsByName() {
-        return Student.sortStudentsByName(students);
+        if (students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+        return sorted;
     }
 
     /**
-     * Removes the student with the given roll number from a classroom.
+     * Removes the student with the given roll number from classroom.
      * <p>
-     * roll number: {@code > 0}.
+     * roll number should be {@code > 0}.
      * </p>
      * 
+     * @param students list of students to modify
      * @param roll the roll number to remove
      * @return {@code true} if a student was removed, {@code false} if no match or if the list of students is empty
      */
     public boolean removeStudentByRoll(int roll) {
-        return Student.removeStudentByRoll(students, roll);
+        if (students.isEmpty() || roll <= 0) return false;
+
+        return students.removeIf(s -> s.getRollNumber() == roll);
     }
 
     /**
-     * Returns a new list containing students in descending order by marks (highest first).
+     * Returns a new list containing students sorted by marks in descending order (highest first).
      * <p>
-     * The sorting is stable for students with equal marks.
+     * Original list is not modified. The sorting is stable for students with equal marks.
      * </p>
      * 
+     * @param students the list of students to sort
      * @return new sorted list by marks in descending order,
      *              or an empty list if input is empty
      */
     public List<Student> sortByMarksDescending() {
-        return Student.sortByMarksDescending(students);
+        if (students.isEmpty()) return new ArrayList<>();
+
+        List<Student> sorted = new ArrayList<>(students);
+        sorted.sort((a, b) -> Double.compare(b.getMarks(), a.getMarks()));
+        return sorted;
     }
 
     /**
@@ -311,6 +458,6 @@ public class Classroom {
      */
     @Override
     public String toString() {
-        return String.format("Classroom: %s (%d students)%n%s", className, students.size(), getSummary());
+        return String.format("Classroom: %s (%d students)%n%s", className, students.size(), getClassSummary());
     }
 }
